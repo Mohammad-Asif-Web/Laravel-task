@@ -1,0 +1,111 @@
+
+=================Model================================
+database এর ভিতরে table থাকে, table এর ভিতর data store থাকে। আর table এর  data আনা নেয়া হয়  model এর মাধ্যমে। তাই প্রতি  table এর জন্যে  model & migration বানাতে হয়। 
+Model এর file capitalyze হবে। EX:- UserData.php
+
+Migration এ table নাম সব সময় plural হবে (মানে model যে নামে তৈরী হইসে তার সাথে s যুক্ত হবে), এটা Laravel এর convention.
+*যদি 's' যুক্ত না করি তাহলে  model সেই  table কে চিনবে না,  error দিবে। আর এই error solve করতে model এর মধ্যে table টা বলে দিতে হবে।  example:-
+class Product extends Model
+{
+  use HasFactory;
+  protected $table = 'task';
+}
+
+*যেদিকে Model তৈরী হইসে->
+app>Models>product.php
+
+*যেদিকে Model এর  Migration তৈরী হইসে->
+database>migrations>2022_05_22_14343_create_products_table.php
+ 
+model কি করে --  আমাদের মাইগ্রেশনের যে ফাইল থাকে সেটা মেপিং করে, ডাটাবেস থেকে  ডাটা আনতে পারি, সেন্ড করতে পারি।
+ডাটাবেসের প্রতিটি টেবিলের জন্যে একটি করে মডেল থাকে, যেটি টেবিলের সাথে ডিরেক্ট ব্যবহার হয়। মডেল ব্যবহার করেই সেই টেবিলের ডাটা ইনসার্ট/আপডেট/ডিলেট করা হয়।
+
+** শুধু মডেল তৈরী করতে কমান্ড
+--'php artisan make:model Product'
+
+**একসাথে কন্ট্রোলার, মডেল, মাইগ্রেশন তৈরী করতে কমান্ড  
+--'php artisan make:model Product -rm'
+
+**এক মডেল কমান্ডের মাধ্যমেই Controller,Model,Migrations,Request, Policies 
+সবকিছু তৈরী করতে command:
+--'php artisan make:model Product --all'
+
+
+==================== Migration =============================
+
+মাইগ্রেশন কি -- আমরা SQL ডাটাবেসে গিয়ে টেবিল তৈরী করি না, একটা ফাইল তৈরী করি। tarpor database>migration forlder 
+er vitore je 'table.php' file gulo thake সেটাতে আমাদের টেবিলের 
+schema স্ক্রিপচার ডিফাইন করি. তারপর একটা কমান্ড চালানো হয়  ’php artisan migrate’ নামে, আর এইভাবেই আমাদের ডাটাবেসে এর সাথে মাইগ্রেট হয়ে যায়। এবং এর সাথে আমাদের মডেলের ও দরকার হয়।
+
+
+
+//table column type
+**integer = int type
+**string = varchar type, maximum limit 255,
+**text = TEXT type, its medium limit not more than 255-1000 characters
+**foreignId = Takes the other table primary id(id).+
+**time = only time stores
+**date = date
+**dateTime = DATETIME type
+**double = double type
+**timestamp = database field will be 'timestamp' type
+**timestamps = 'created_at', 'updated_at' এই ২ ফিল্ড টেবিলে একসাথে তৈরী করে।
+
+//Column Modifiers
+**->nullable = এই ফিল্ড খালি রাখলে কোনো ইরর দিবে না।
+**->after('column_name') --যে ফিল্ডের পরে এটা বসবে।
+**->comment('my comment') -- এর ভিতরে কমেন্ট করে রাখা হয়।
+**->default($value) = default ভেল্যু রাখে।
+**->first() = এই কলাম সবার প্রথমে থাকবে।
+**->unique() = এটা সব সময় ইউনিক ডাটা নিবে।
+
+// run the migrations
+public function up()
+{
+  Schema::create('products', function(Blueprint $table){
+    $table->id();
+    $table->unique('email');
+    $table->string('title')->nullable();
+    $table->text('description')->nullable();
+    $table->tinyInteger('status')->nullable();
+    $table->timestamp('deadline')->nullable();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+    $table->timestamps();
+  });
+}
+
+// Reverse the migrations
+public function down()
+{
+  Schema::drop('products');
+}
+
+****migration rules for create, update, delete table******
+--migrations কতবার চালানো হইসে সেই হিসাব রাখে 'batch' no.
+--migrations মেন্যুয়ালি ডিলেট করলে টেবিল ও ডিলেট করতে হবে।
+--'php artisan migrate:rollback' লাস্ট  migration এ যে টেবিল তৈরী হইছিলো প্রতিবার এই কমান্ড রান করলে লাস্ট migration থেকে ডিলেট হতে থাকবে। 
+
+****** Add Columns to an Existing Table *********
+'php artisan make:migration add_description_and_status_field_in_posts_table --table=posts'
+এই কমান্ড রান করলে একটি নতুন migrations ফাইল তৈরী হবে। এই ফাইলের  Schema’র ভিতরে টেবিলের ফিল্ড গুলো বলে দিতে হবে।
+up() ফাংশনে যে ফিল্ড গুলো এড করছি, down() ফাংশনে সেই ফিল্ড গুলো dropColumn এ দিতে হবে।
+না হয় rollback করার সময় এই ফিল্ড গুলো ডিলেট হবে ন।
+
+public function up()
+{
+Schema::table('posts', function(Blueprint $table){
+     $table->text('description')->nullable()->after('title');
+     $table->tinyInteger('status')->nullable()->after('description')->comment('1 for active, 0 for inactive');
+  });
+}
+
+public function down()
+{
+  Schema::table('posts', function(Blueprint $table){
+    $table->dropColumn('description');
+    $table->dropColumn('status');
+  });
+}
+
+'php artisan migrate' kore dilei column add hoye jabe.
+'

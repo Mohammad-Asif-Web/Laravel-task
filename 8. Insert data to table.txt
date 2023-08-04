@@ -1,0 +1,123 @@
+=========================Router========================
+Route::get('task/create',[TaskController::class, 'create'])->name('task.create');
+Route::post('task',[TaskController::class, 'store'])->name('task.store');
+Route::get('task',[TaskController::class, 'index'])->name('task.index');
+
+==============Controller 'create' function=============
+*form টা  show করার জন্যে 'task/create' url এ 'create' function র্টাগেট করসি।
+তারপর 'create' function  এ আমাদের  form কে রিটার্ন  করসি 'task/create' url এ।
+public function create()
+{
+  $users = User::pluck('name','id');
+  return view('modules.task.create', compact('users'));
+}
+
+==============html create view page=============
+* তো এই form টি কোন route এ  action করবে সেটি  'action' attribute এ বলে দিতে হবে এবং যেহেতু 
+ডাটা insert করতেছি তাই  'post' method এ, এটাও বলে দিতে হবে। 
+<form method='POST' action="{{route('task.store')}}">
+  @csrf
+  <label>title</label>
+  <input type='text' name='title'/>
+</form>
+
+==============Controller 'store' function=============
+*form এ submit বাটন এ ক্লিক করলে এটি action করবে 'store' function থেকে।
+২ নং route এ 'Route::post' দেয়া আছে  ওই  function এ যাবে। তো 'store' function এ আসার
+পর যদি 'validation' থাকে তো এগুলা আগে process করবে। যদি  validation থেকে কোনো
+error না দেয় তাহলে  data create করবো 'model' এর মাধ্যমে। 
+
+public function store(Request $request)
+{
+  $this->validate($request, [
+    'title'=>'required',
+    'description'=>'required',
+  ]);
+  
+  // এই 'Task' হচ্ছে model এর নাম 
+  Task::create($request->all());
+  return redirect()->route('task.index');
+
+}
+
+=============='Task' Model & Migrations=============
+*'Model' ছাড়া আপনি চাইলেই ডাটাবেসে কোনো ডাটা ইনর্সাট করতে পারবেন না। 'Model' এর ভিতর বলে দিতে হবে
+ কি কি field ইনর্সাট করবেন। আবার শুধু 'model' বলে দিলেই ডাটা ইনর্সাট হবে না। 'model' এ permission 
+বলে দিতে হবে ও 'Migration' এর table schema define করতে হবে। তো  'Task' model এ যেতে হবে, ‍ সেদিকে ২ ভাবে permission বলে দেয়া যায়। 
+1) protected $fillable 2) protected $guarded
+class Task extends Model
+{
+  use HasFactory;
+
+  //protected $fillable = ['title','description']
+  protected $guarded = [];
+}
+
+1) protected $fillable: এ field গুলো বলে দিতে হবে, যেই  field গুলো ইনর্সাট করতে চাচ্ছি। 
+$fillable এর ভিতরে যে কয়টা  field বলে দিবো লারাভেল সে কয়টা  field ই নিবে। কিন্তু $fillable 
+এর মাধ্যমে অল্প কয়েকটা  field insert এর জন্যে ভালো।  data যদি অনেক বেশী হয় তাহলে ঝামেলা করে। 
+তাই  $guarded দিয়ে যতো খুশি  data সহজেই insert করা যায়।
+2) protected $guarded: এ ইনর্সাটের জন্যে শুধু blank array '[]' দিলেই হয়। 
+তারপর ডাটাগুলো database এ ইনসার্ট হবে। কিন্তু submit button 'name' attribute দেয়া যাবে না, 
+তাহলে '$guarded' error দিবে যে 'column not found'.
+
+Migration 'Tasks_table.php': ডাটাবেসে Task টেবিলে যে  field গুলো  insert হবে এই migration
+scheema তে সেই field গুলো বলে দিতে হবে। না হয়  insert করলে  error দিবে।
+Ex: 
+Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('description');
+            $table->timestamps();
+        });
+
+*********Controller index function for read data************
+*তারপর model এর মাধ্যমে data create হয়ে redirect করবে 'index' function এ, আর এই  
+'index' function এর মাধ্যমে  html index page এ রিটার্ন করবে যেদিকে ডাটা গুলো লিস্ট show করবে।
+return redirect()->route('task.index');
+
+public function index()
+{
+  $tasks = Task::all();
+  return view('modules.task.index', compact('tasks'));
+}
+
+*********html index view page***************
+*'index' function থেকে $tasks data compact করে এই page এ পাঠানো হইসে, সেটা 
+@foreach loop আকারে ব্যবহার করা হইসে। 
+<table>
+  <thead>
+    <tr>
+      <td>Serial</td>
+      <td>Title</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+  <tbody>
+    @php $sl=1 @endphp
+    @foreach($tasks as $task)
+    <tr>
+      <td>{{$sl++}}</td>
+      <td>{{$task->title}}</td>
+      <td>{{$task->description}}</td>
+    </tr>
+    @endforeach
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+=================Laravel Functions==================
+
+1. dd(app()) -> stands for 'dump and die' function. This function dumps the given variables 
+and ends execution of the script: works like javascript console
+
+2. asset('') ->css,js,image files direct public folder theke link krar jnne ai function use
+kra hoy
+
+3. name('')-> ati route er sese jukto kra hoy. jokhon kono route ke variable baniye rakha hoy onno
+page e dakar jnne tokhon 'route('')' function er vetor variable dilei hoye jabe.
+EX: Route::('blog', [Controller::class], function(){
+	return view('blog');
+})->name('blog');
+
+4. aksathe model,controler,seeders,migration create krte command
+'php artisan make:model Task -rsm'
+
+5. compact() --
+
+6. url() --
+
+7. @auth --
+
+8. Session::flush()
+9. Auth::logout()
+10. with()
+11. 
+
+
+
+
+dd($request->all()) -- form theke sob data ante
+dd($request->input('name')) -- jdi single input er data drkar hoy
+dd($request->only('user_id', 'name') -- jdi multiple input value drkar hoy
+dd($request->except('name') -- 'name' bade baki sob data dekhabe
+dd($request->exists('email') -- check kre ai value ta ase kina, true/false
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+ডাটা যদি অনেক বড় হয় তাহলে pagination ব্যবহার করতে হবে। অনেক বড় ডাটা লোড করতে সময় অনেক লাগে। তাই লোডিং কমাতে pagination ব্যবহার করা ভালো।
+
+controller function e->
+Task::with('user')->latest()->paginate(20);
+
+******html view page******
+টেবিলের বাইরে লিংক করে দিতে হয় পেজিনেশন দেখাতে।
+
+  @endforeach
+  </table>
+  {{$tasks->links()}}
+</div>
+
+কিন্তু ডিজাইন যদি উল্টা পাল্টা থাকে, তাই এক্সট্রা কোড 'boot' এ বলে দিতে হবে। তাহলে ফ্রন্টেন্ডে pagination
+এর ডিজাইনে ঝামেলা করবে না।
+app>Providers>AppServiceProviders.php তে গেলে boot ফাংশন আছে।
+উপরে অবশ্যই namespace ইমপোর্ট করতে হবে।
+
+Illuminate\Pagination\Paginator
+
+public function boot()
+{
+  Paginator::useBootstrap();
+}
+
+
+****************Flash Message Section*****************
+*******html index view page********
+@if(session()->has('msg'))
+<div class="alert alert-{{ session('cls') }}">
+  {{ session('msg') }}
+</div>
+@endif
+
+********Controller store function*******
+public function store(TaskStoreRequest $request)
+{
+        Task::create($request->all());
+        session()->flash('msg', 'Task Created Successfully');
+        session()->flash('cls', 'success');
+        return redirect()->route('task.index');
+
+}
+
+******** Custom Error Page Hangle ******
+views এর ভিতরে  'errors' নামে ফোল্ডার তৈরী করতে হবে। এই ফোল্ডারে ইরর code অনুযায়ি পেজ তৈরী করে দিলে লারাভেল  অটোমেটিক নিয়ে নিবে।
+error->
+	404.blade.php
+	405.blade.php
+	403.blade.php
+
+abort ফাংশনে এই কোড গুলো দিয়ে দিলেই অটোমেটিক 'view' ফোল্ডার থেকে 'error' ফোল্ডার হয়ে ইরর পেজ গুলোতে চলে যাবে। Ex:
+
+if(!$task){
+  abort(404);
+}
+
+
+
+

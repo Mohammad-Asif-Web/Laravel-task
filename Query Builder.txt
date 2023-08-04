@@ -1,0 +1,35 @@
+
+query builder সরাসরি টেবিল থেকে ডাটা আনে তাই অনেক ফাস্ট কাজ করতে পারে।
+
+query builder এ relation করতে গেলে  'with()' ব্যবহার করা যাবে না। এর বদলে আমাদের
+'join()' ব্যবহার করতে হবে।
+create, edit, update, delete, কম ডাটা নিয়ে আসতে  Eloquent ভালো। 
+কিন্তু শুধু হাজারের উপরে ডাটা নিয়ে আসতে Query Builder দিয়ে কাজ করবো।
+
+Eloquent ->Model->execute queries->Make formatted data object
+Query Builder-> execute queries
+
+1)$tasks = DB::table('tasks')->paginate(20);
+
+2)$tasks = DB::table('tasks')->join('users', 'user_id', '=', 'users.id')->get();
+
+A basic SELECT query:
+3)$users = DB::select('select * from users where id = ?', [1]);
+4)$users = DB::select('select * from users');
+
+
+Running An Insert Statement:
+5)DB::insert('insert into users (id, name) values (?, ?)', [1, 'asif']);
+
+
+Running An Update Statement:
+6) $affected = DB::update('update users set price = 100 where name = ?', ['Anita']);
+
+Running A Delete Statement:
+
+6) $deleted = DB::delete('delete from users');
+
+
+
+
+

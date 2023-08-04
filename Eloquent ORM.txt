@@ -1,0 +1,56 @@
+Eloquent ORM = Object Relational Mapper.
+এটা মডেল হয়ে ডাটাবেসের সাথে সর্ম্পকিত। প্রতি ডাটাবেস টেবিলের একটি করে মডেল থাকে যা টেবিলের সাথে সর্ম্পক থাকে।
+১) যদি কখনো টেবিলের নাম পরিবর্তন করতে হয়, তাহলে  সেই টেবিলের মডেলে গিয়ে টেবিলে নাম বলে দিতে হয়।
+protected $table = 'my_task';
+
+২) যে কোনো টেবিলে 'id' প্রাইমারি কি হিসেবে থাকে. যদি এই নাম পরিবর্তন করতে হয় ওই টেবিলের মডেলে বলে দিতে হবে। 
+protected $primaryKey = 'task_id';
+
+৩) যদি একটি মডেলের সব তথ্য দেখতে চাই, এই কমান্ড রান করতে হবে
+'php artisan model:show Task'
+ডাটাবেসের নাম, টেবিলের নাম, ফর্ম থেকে কি কি ফিল্ড নেয়া হইছে (id, name,email etc) এগুলো দেখাবে।
+
+৪) আমাদের প্রতি টেবিলে বাই ডিফল্ট 'timestamps' দেয়া থাকে। এর মাধ্যমে  'created_at' 'updated_at' দুইটি field অটো  তৈরী হয়।  যদি এই দুই field দরকার না হয় তাহলে false করে দিতে পারি।
+public $timestamps = false;
+
+*******Eloquent Queries*********
+all(), get(), paginate() -- এরা সবাই multiple ডাটা fetch করে array আকারে। 
+এরে ডাটা ইকো করতে লুপ চালাতে হয়।
+
+1)'select * from tasks' = Task::all();
+
+2) Task::paginate(20); ২০ টি ডাটা দেখাবে।
+
+3) Task::latest()->paginate(20); ডিসেন্ডিং আকারে ডাটা দেখাবে।
+
+4) Task::with('user')->orderBy('title', 'asc')->paginate(50); 
+'title' field এর উপর এসেন্ডিং আকারে  অর্ডার করে ৫০ টা ডাটা  দেখাবে, যা 'Task' এবং 'User' এর সাথে সর্ম্পকিত।
+
+5)short form: orderBy('title') and orderByDesc('title').
+
+6) Task::where('user_id', 5)->paginate(100);
+যার  user_id 5 শুধু  তাদের ডাটা দেখাবে।
+
+7) Task::where('status', 1)->where('title', 'asddkd')->paginate(100);
+যখন ২টা where থাকে সেটা AND অপারেটরের মতো কাজ করবে। ২টা true হলেই সেই ডাটা গুলো নিয়ে আসবে।
+
+8)Task:where('title', 'askdfkd')->OrWhere('status', 0)->paginate(100);
+১টা where, ১টা OrWhere থাকে সেটা OR অপারেটরের মতো কাজ করে।
+যদি 'title' মিলে তাহলে তার ডাটাগুলো দেখাবে, আবার যদি 'status' মিলে তাহলে তার ডাটাগুলোও দেখাবে
+
+9) Task::with('user')->take(10)->get(); 
+এটা শুধু ১০ টি ডাটা নিয়ে আসবে।
+
+10) Task::skip(10)->take(10)->get();
+এটা প্রথম ১০ টি id বাদ দিয়ে, পরের ১০ টি id নিয়ে আসবে।
+
+*****single data fetch krar function******
+11) Task::where('title', 'asdkfdkd')-first();
+শুধু ১টি ডাটা নিয়ে আসবে।
+
+12) Task::find(1); 
+find ফাংশণ শুধু id জন্যে use হয়। সিঙ্গেল ডাটা নিয়ে আসে, ডাটা না পেলে 'null' রিটার্ন করে।
+
+13) Task::findOrFail(100000);
+যদি ডাটা না পায় তাহলে '404' পেজে নিয়ে যাবে।
+

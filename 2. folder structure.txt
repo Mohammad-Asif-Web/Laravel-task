@@ -1,0 +1,59 @@
+==========================Laravel Folder Structure=================================
+**app -- এর ভিতরে সব class আকারে থাকে । প্রধান logical part গুলির প্রসেসিং (database 
+handle, controlling, models) সব এখান থেকে হয়।
+app>provider --  এইদিকে কিছু সেটিং থাকে।
+
+**bootstrap -- এটার ভিতরে cache থাকে।  এই বুটস্ট্র্যাপ আর সিএসএস বুটস্ট্র্যাপ এক নয়।
+এর 'app.php' এর ভিতরে সব configuration থাকে temporary data হিসেবে।
+
+**config -- এই config এর ভিতরে আমাদের এপ্লিকেশনের configuration settings 
+(application setting, database setting, cache, session, service) আছে.
+এটার সব ফাইলের  configuration '.env' file এর সাথে connect থাকে।
+
+config>app.php 	-- production mode/developer mode, 
+		-- app debug on/off. যদি debug on থাকে error দেখা দিবে।
+			off thakle error show krbe nah
+		-- app url, asset folder url, timezone and language setting
+		-- service provider(কি কি service provide করবে)
+		-- package service, application service
+
+config>auth.php -- এটা আমাদের default auth কে control করে।
+
+config>mail.php -- default mail, user, password, mail account sob .env er sathe thake.
+
+config>view.php -- এর ভিতরে আমরা template গুলোকে কিভাবে দেখবো path deya ase.
+
+config>sessionphp -- session কিভারে manage হবে, session storage কোথায় থাকবে।
+
+**database -- database related সব কিছু এটার মধ্যে থাকে।
+database>factories -- এটা fake data generate করে. যদি অনেক গুলো data insert করতে হয় কম সময়ে,
+			তাই factories fake data generate করে।
+database>migrations -- table create করার জন্যে সব কিছু  migration এর ভিতরে লিখতে হয়।
+			এর ভিতরে প্রতি table এর schema থাকে, যা database থেকে table 
+			কে  migrate করে।
+database>seeders -- যদি আমি আগে থেকেই real data database এ রাখতে চাই, সেটা seeder করে।
+
+**lang -- language, localization নিয়ে কাজ করে।
+
+**public -- আমাদের  application এর css, js, images, icons অর্থাৎ প্রধান এসেট গুলো এদিকেই রাখা হয়।
+
+**resources->view -- এর ভিতরে আমাদের সব html file গুলো থাকে।  আমাাদের main file গুলো
+			এদিক থেকেই run করবে।	
+	
+**routes -- api, auth and file href link controls by routes
+routes>web.php -- views er vitore je file gulo thake seguloke server e dekhanor jnne
+		link name drkar hoy. ex: localhost:8000/welcome. to ai link guloke
+		nijer icche mto banano jay routes e. link name deyar por callback funtion
+		add kore return krte hobe view er je file dekhabo.
+
+**storage -- এর ভিতরে temporary data রাখা হয়।
+
+**tests -- code testing এর জন্যে এই ফাইল ব্যবহার করা হয়।
+
+**vendor -- এটার ভিতরে laravel এর third party package install থাকে, laravel এর data thake,
+		অন্য কারো code থাকে. third party app/package use করলে vendor চিনে 'composer.json' 
+		এর মাধ্যমে।  এই folder delete হলে site run করবে না। যদিও এই folder server এ 
+		upload হয় না। যদি এটি কখনো delete হয়ে যায়, তাহলে command এর মাধ্যমে তা ফিরত আনা যায়।
+		command -- 'composer update'
+		তারপর আবার 'php artisan serve' command run করে live server এ আনতে হয়।
+		এর ভিতরে কোনো code করা যাবে না, এটা automatic update হয়।

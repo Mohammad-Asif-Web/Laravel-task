@@ -1,0 +1,26 @@
+**********Four types of Eloquent Relationship in Laravel************
+1) one to one: table এর এই row এর সাথে অন্য  টেবিল এর শুধূ ‍১টি row এর সাথে সর্ম্পক থাকবে। ex:
+passport/nid এগুলা সব সময় unique হয়। তাই একজন  user এর  passport/nid একটি হবে। 
+
+2) one to many: কোনো ১টি  row এর সাথে অনেক গুলো  row এর সাথে সর্ম্পক থাকে। ex: 
+একটি project অনেক গুলো  student মিলে করতে পারে। এদিকে  project একটি আর  student অনেক।
+এদিকে project id হচ্ছে primary key.
+
+3) many to one: এটা one to many relation এর reverse type. অনেক গুলো  student যখন ১টি project এ কাজ করে, মানে অনেক গুলো ডাটা কোনো ১টি  id/user_id সাথে সর্ম্পক থাকে। 
+id/user_id হচ্ছে primary key।
+
+4) many to many: A ও B ২টা টেবিল। A টেবিলের ১টি row যদি B টেবিলের অনেকগুলো row এর সাথে সর্ম্পক থাকে। আবার B টেবিলের ১টি  row যদি A টেবিলের অনেকগুলো  row এর সাথে সর্ম্পক থাকে। এটাকেই বলা হয় many to many. Ex:
+
+*যদি Customer আর Product এর থেকে চিন্তা করি, ১টি  Customer তার মন মতো অনেকগুলো Product কিনতে পারে। এই টেবিলে Customer এর id হচ্চে primary key. আবার ১টি  Product কে অনেক গুলো Customor একসাথে কিনতে পারে। এই টেবিলে Product এর  code হচ্ছে primary key.
+Customer primary key & Product primary key যদি অন্য কোনো টেবিলে দুইটা একসাথে রাখা হয় তাহলে এরা Foreign key হয়ে যাবে। তখন সেই টেবিলে তাদের জন্যে নতুন  Primary key বানানো হবে read করার জন্যে। 
+--------------------------------------
+  id	| Customer_id	| Product_id | 
+--------------------------------------
+  1	|   01		|   p101     |
+  2	|   01		|   p102     |
+
+  3	|   02		|   p101     |
+  4	|   02		|   p102     |
+  5	|   02		|   p103     |
+--------------------------------------
+এদিকে id হচ্ছে এ টেবিলের primary key.

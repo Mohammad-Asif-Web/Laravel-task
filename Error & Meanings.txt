@@ -1,0 +1,19 @@
+22001: String data, right truncated: 1406 Data too long for column 'title'.
+meaning: ai column e limit er besi data deya hoise. check validation for how much character is limited for this input field.
+
+SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+meaning: database connection hoy ni, xampp server e mysql admin on hoy ni
+
+409: THIS ACTION IS UNAUTHORIZED
+Meaning: 'Request' er moddhe 'authorize' false ase.
+
+General error: 1364 Field 'state' doesn't have a default value
+meaning: 'state' field null deya ase. ata nullable kore dite hobe
+
+
+
+
+
+
+
+

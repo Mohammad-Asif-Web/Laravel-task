@@ -1,0 +1,49 @@
+******Router************
+Route::get('task/{id}', [TaskController::class, 'show'])->name('task.show')
+second bracket এর ভিতর যে 'id' দিসি এটা  dynamic হবে। <a> tag এর href এর maddhome 'id' pass
+করলে এটা  automatic নিয়ে নিবে। উপরের রাউটারের নাম আর id <a> tag এ ব্যবহার করতে হবে। না হয় id pass করতে
+পারবে না। 
+
+********html index page view********
+যদি আমরা এই শো বাটনে ক্লিক করি, তাহলে একটা সিংগেল টাস্কের পুরো ডিটেইলস চলে আসবে। এই বাটনে ক্লিক করার  পর 'id' নিয়ে controller এর 'show' ফাংশনে চলে যাবে।
+<td>
+  <a href="{{route('task.show', $task->id)}}">
+    <button class="btn btn-sm btn-info">
+      <i class="fa-solid fa-eye"></i> Show
+    </button>
+  </a>
+</td>
+
+******* controller show function for single table data *************
+ এই id দিয়ে যদি ডাটা পায় তো রিটার্ন করবে 'task.show' view পেজে। ডাটা না পাইলে ৪০৪ ইরর পেজে রিটার্ন করবে।
+public function show($id)
+{
+  $task = Task::findOrFail($id);
+  return view('modules.task.show', compact('task'));
+}
+
+******** controller show function for relational table data  ********
+উপরের show ফাংশনে শুধু একটু টেবিলের ডাটা দেখানোর জন্যে ব্যবহার হবে। আর যদি multiple টেবিলের ডাটা নিয়ে আসতে হয় তাহলে  'read data to table.txt' এই ফাইলে দুইটা টেবিলে সর্ম্পক যে 'user'
+ফাংশন দিয়ে করা হইসে অই ফাংশন ব্যবহার করতে হবে। ex:
+public function show($id)
+{
+  $task = Task::with('user')->findOrFail($id);
+  return view('modules.task.show', compact('task'));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

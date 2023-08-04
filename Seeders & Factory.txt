@@ -1,0 +1,82 @@
+
+********Laravel Seeder********
+seeders এর মাধ্যমে রিয়েল ডাটা/ফেক ডাটা দুইটাই জেনারেট করা যায়। 
+নতুন Seeder বানাতে নিচের কমান্ড রান করতে হবে।
+'php artisan make:seeder TaskSeeder'
+
+ডাটা গুলো $tasks ভেরিয়েবলের মধ্যে আছে। এখন এই ভেরিয়েবলটি  Task 'Model' এর মধ্যে ইনসার্ট হবে 'create' ফাংশনের মাধ্যমে।
+
+class taskSeeder extends Seeder
+{
+  public function run()
+  {
+        $tasks = [
+            ['name' => 'Ona Harvey',
+             'address' => 'North Euniside'
+            ],
+            ['name' => 'Mr. Mraz',
+             'address' => 'Stanton Station'
+            ],
+            ['name' => 'Melissa Carter',
+             'address' => 'Light House'
+            ],
+            ['name' => 'Melvin koch',
+             'address' => 'Nolan Harbours'
+            ],
+          ];
+     
+          foreach($tasks as $task){
+            Task::create($task);
+          }
+
+  }
+}
+
+উপরের ডাটাগুলো Category টেবিলে স্টোর করতে এই কমান্ড রান করতে হবে।
+'php artisan db:seed --class=TaskSeeder'
+
+শুধু Category টেবিল থেকে ডাটা গুলো রিমুভ করতে ->
+'php artisan migrate:fresh --seed --seeder=TaskSeeder'
+
+ডাটাবেসের সব গুলো টেবিলে আগের ডাটা রিমুভ করে নতুন ডাটা এড করতে এই কমান্ড রান করতে হবে।
+'php artisan migrate:fresh --seed'
+
+
+*****Laravel Factory******
+ফ্যাক্টরির মাধ্যমে শুধু ফেক ডাটা জেনারেট করা যায়।
+নতুন factory তৈরী করতে মডেলের নাম বলে দিতে হবে। 
+'php artisan make:factory TaskFactory --model=Task'
+
+public function definition()
+{
+  return [
+    'name' => $this->faker->name;
+  ]
+}
+
+fakerphp একটি  প্যাকেজ ফেক ডাটা জেনারেট করার। এর ওয়েবসাইটের er Available Formatters
+অপশনে গেলে ডাটা গুলো পাওয়া যাবে। 
+$this->faker->lastName();
+$this->faker->state();
+
+tar por database>seeders>DatabaseSeeder.php file e jete hobe. sedike jei table er data generate krbo tar model import krte hobe
+use App\Models\Task
+run() function er moddhe ktogulo data generate krbo blte hobe
+
+class DatabaseSeeder extends Seeder
+{
+  public function run():void
+  {
+    Task::factory()->count(10)->create();
+  }
+}
+
+sob kicu thik thakle database e ai comman run krte hobe
+'php artisan db:seed'
+tahle data generate hoye jabe.
+
+ar ager data remove kore aksathei new data add krte
+'php artisan migrate:fresh --seed'
+
+
+

@@ -1,0 +1,96 @@
+Validation এর ইরর মেসেজ গুলো বাই ডিফল্ট যেদিকে থাকে।
+lank>en>validation.php
+যদি validation.php না থাকে তাহলে এই কমান্ড রান করলে এড হয়ে যাবে।
+'php artisan lang:publish'
+
+==============step 1 for validatin (good practice) ==========
+লারাভেল validation Controller এর মধ্যে করা যায়। কিন্তু এটা লারাভেল কনভেনশনের সাথে যায় না।
+তাই প্রতিটি  validation কে আলাদা ভাবে রাখতে হয় custom request ফাইলে মধ্যে।  যেভাবে Request
+ফাইল তৈরী করতে হয়।
+'php artisan make:request TaskStoreRequest'
+
+Request ফাইলে 'authorize() and rules()' এই দুইটা ফাংশন থাকে।
+-- authorize() কে true করে দিতে হবে।
+public function authorize()
+{
+  return false;
+}
+
+--rules() এর মধ্যে ফর্ম থেকে ইনপুটের যতো  validation rules আসে সব গুলো দিয়ে দিতে হবে।
+public function rules()
+{
+  return [
+      'title'=>'required|max:255|min:5|string',
+      'description'=>'required',
+      'user_id'=>'required|numeric',
+  ];
+}
+
+--custom মেসেজের জন্যে custom message ফাংশন করে দিতে হবে rules() এর নিচে।
+public function message()
+{
+  return [
+    'title.min' => 'Title is too small',
+    'user_id.required' => 'Please Select User',
+  ];
+}
+তো এই  'TaskStoreRequest' controller ফাংশনের মধ্যে দিতে হবে। না হয় কাজ করবে না। By default 'Request' যেটা  থাকে ওইটা সবার জন্যে common request, তো ওইটা পরিবর্তন করে 'TaskStoreRequest' replace করতে হবে। আর ক্লাসটির namespace উপরে import করতে হবে।
+
+public function store(TaskStoreRequest $request)
+{
+  Task::create($request->all());
+  return redirect()->route('task.index');
+}
+====================step 2 for validation (bad practice)===============
+
+**********html view part**************
+
+<div class="card-body">
+  @if($errors->any())
+    <ul class="alert alert-danger">
+      @foreach($errors->all() as $error)
+        <li>{{$error}}</li>
+      @endforeach
+    </ul>
+  @endif
+
+    <form method="POST" action="{{route('task.store')}}">
+      @csrf
+      <label class="w-100">title</label>
+      ...
+      ...
+      ...
+      <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+
+**********controller part store function data is validating***********
+public function store(Request $request)
+{
+  $this->validate($request, [
+	'title'=>'required|max:255|min:5|string',
+	'description'=>'required',
+        'user_id'=>'required|numeric',
+  ],
+  $message=[
+    'title.min' => 'Title is too small'
+    'user_id.required' => 'Please Select User'
+    
+  ]
+);
+
+}
+
+******** Validation Rules *********
+required-> This field must be filled.
+max:255-> maximum limit 255 characters
+min:5-> minimub 5 characters must be filled.
+string-> This field will accept only string type value
+numeric-> This field will aceept number value
+
+
+
+
+
+

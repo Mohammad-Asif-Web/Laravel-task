@@ -1,0 +1,90 @@
+
+*******Router**********
+Route::get('task/{id}/edit', [TaskController::class, 'edit'])->name('task.edit');
+Route::put('task/{id}', [TaskController::class, 'update'])->name(task.update);
+Route::delete('task/{id}', [TaskController::class, 'destroy'])->name(task.destroy);
+
+****************html index page edit, delete button**********
+<td>
+  <a href="{{route('task.edit', $task->id)}}"
+    <button class="btn btn-warning">
+      <i class="fa-solid fa-edit"></i>Edit
+    </button>
+  </a>
+</td>
+
+<td>
+  <a href="{{route('task.destroy', $task->id)}}"
+    <button class="btn btn-warning">
+      <i class="fa-solid fa-edit"></i>Delete
+    </button>
+  </a>
+</td>
+
+
+*******Controller edit function********
+public function edit($id)
+{
+  $users = User::pluck('name', 'id');
+  $task = Task::findOrFail($id);
+  return view('modules.task.edit', compact('users', 'task'));
+}
+
+
+********html edit view page******** 
+এই 'edit' ফাংশনের কাজ হচ্ছে কোনো নির্দিষ্ট টাস্কে ক্লিক করলে এর ভেল্যু সহ পুরো ফর্ম টা দেখাবে। 
+edit ফাংশন থেকে compact করা ডাটা এদিকে সরাসরি ব্যবহার করা যাবে 'value' attibute এর মধ্যে।
+
+<form method="post" action="{{route('task.update')}}">
+  @csrf
+  @method('put')
+  <label class="w-100">Title</label>
+  <input type="text" value="{{$task->title}}" name="title" />
+  ...
+  ...
+  ...
+</form>
+
+********* controller update function**********
+যখন ফর্মটি শো করবে তার পরের কাজ হচ্ছে ভেল্যু 'update' করা।  আপডেটের জন্যে edit ফর্মে method
+হবে 'put' আর  action এ 'update' রাউটারের নাম দিয়ে দিতে হবে।
+'update' এর জন্যে রাউটে 'put' method ব্যবহার করা হইছে। update এ ক্লিক করলে তারপর 
+controller এর update ফাংশনে কাজ করবে।
+public function update(Request $request, $id)
+{
+  $task = Task::findOrFail($id);
+  $task->update($request->all());
+  return redirect()->route('task.index');
+}
+
+********
+
+
+
+*******controller delete function*********
+public function destroy($id)
+{
+  $task = Task::findOrFail($id);
+  $task->delete();
+  return redirect()->route('task.index');
+}
+
+********html edit view page******** 
+<td>
+ <form method="post" action="{{route('task.delete')}}">
+  @csrf
+  @method('delete')
+  <button type="submit">Delete</button>
+ </form>
+</td>
+
+
+
+
+
+
+
+
+
+
+

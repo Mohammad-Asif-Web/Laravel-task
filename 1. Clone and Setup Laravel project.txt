@@ -1,0 +1,20 @@
+প্রথতে একটি folder create করতে হবে। folder টি terminal এ open করতে হবে।
+--git clone https://github.com/mohammad-asif-web/example-app
+তারপর কিছু সময় নিয়ে সম্পূর্ণ প্রজেক্ট  ডাউনলোড হবে।
+
+তারপর app এর মধ্যে প্রবেশ করতে হবে। laravel project ডাউনলোড করলে vendor folder থাকে না,  .env file ও থাকে না। 
+
+তো শুধু  vendor folder download করতে 'composer'update দিতে হবে।
+--composer update
+কিছু সময় নিয়ে vendor folder download হবে।
+
+তারপর '.env.example' নামে যে file টি আসে ওটিকে কপি করে '.env' করে দিলে হয়ে যাবে। এর ভিতরে ডাটাবেস নাম দিলে এর কাজ শেষ।
+
+তারপর আরেকটি  command run করতে হবে  key generate এর জন্যে
+-- php artisan key:generate
+এটি নতুন কি জেনারেট করবে।
+
+সবশেষে 'php artisan serve' এই কমান্ড চালালেই প্রজেক্টি ভালো ভাবে রান করবে।
+
+
+
