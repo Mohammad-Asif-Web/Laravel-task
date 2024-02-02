@@ -1,0 +1,58 @@
+mastering
+
+
+prothome model,controller,migration aksathe create krte command run krte hobe. ex:
+->php artisan make:model Tag -rsm
+
+tarpor CRUD related blade file gulo views er vitor create krte hobe.ex:
+1. create.blade.php
+2. edit.blade.php
+3. index.blade.php
+4. show.blade.php
+
+Route er web.php file e giye CRUD er sobgulo method related resource create krte hobe. ex:
+Route::('/tag', TagController::class);
+sudhu atotukui likhte hoy. laravel 9,10 automatic vabe eder route link/url/name kre rakhse. ar upore valo vabe Controller gulo 'Facades' namespace use krte hobe.
+
+*First Step 'create function'
+to jekono crud krte hole age data insert krte hoy. ar data insert krte hole form create krte hobe. tai Controller theke 'create' function e return view krte hobe 'create.blade.php' file e. adike form banate hobe. 
+
+*create table schema in migration
+form banano sese data store krte hobe database e. tai database e column field gulo banate hobe. sejonno migrations schema create krte hobe, migrations folder er modde 'create tags table' file ase. atatei database er schema banate hobe. 
+
+*model 
+ktogulo data send krbo sugulo modele bole dite hobe. jdi onek data thake tahle sudhu 'protected $guarded = [];' dilei hoye jabe. er por amder migration run krte hobe. ex: 'php artisan migrate'
+tahle schema te design kra field gulo database er 'Tag' table e create hoye jabe.
+
+*store data by 'store' function
+akhon data store krte hobe. tai ebar 'controller' e ese 'store' function e data request krar o validate krar code likhte hobe. sob kichu thik thakle form submit krle data database e chole jabe.
+
+*Read data from database in index file
+akhon ai database er datagulo ke read krte hobe. abar Controller e 'index' function e dataguloke fetch kre aktu variable e rakhte hobe, abong sei variable return view e compact kre 'index.blade.php' file e pathate hobe. sekhane compact kra varibale theke data gulo read krte hobe. eder sathe alert message, error message add krte hobe.
+
+*show single data by 'show' function
+controller e jeye 'show.blade.php' file e return krte hobe data compact kore abong sei data show page e add krte hobe.
+
+*update single data 
+controller theke edit function diye edit.blade.php file e jeye edit form banate hobe(same as create) sudhu value gulo bosiye dite hobe. pore abar controller theke update function er maddhome data update krte hobe
+
+*last delete the data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

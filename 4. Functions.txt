@@ -19,12 +19,15 @@ EX: Route::('blog', [Controller::class], function(){
 
 6. url() --
 
-7. @auth --
+7. @auth, @else, @endauth --
 
-8. Session::flush()
-9. Auth::logout()
-10. with()
-11. 
+8. Session::flush() --
+9. Auth::logout() -- 
+10. with() -- 
+11. @stack('js') ata receive kore @push('js') @endpush()
+12. Srt::slug -- Convert a string to a safe version to be used in a URL, 
+   so that special character not to be allowed on the url. must use this
+'use Illuminate\Support\Str;' in the top of controllers. 
 
 
 

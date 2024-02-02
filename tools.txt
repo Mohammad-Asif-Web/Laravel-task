@@ -19,3 +19,29 @@ install সম্পূর্ণ হলে একটি  debug bar অটো এ
 -- Session সেশনে কোনো ডাটা থাকলে দেখাবে।
 -- Request: রিকুয়েস্টে কি কি ফিল্ড নিছে  
 -- Memory: পেজ লোড করতে টোটাল কতো মেমোরি খরচ ব্যবহার হইছে। 
+
+
+******CDEditor rich text for textare*******
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+    // CDEditor js script code-- 
+    ClassicEditor
+        .create( document.querySelector( '#description' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
+//CKEditor css for customize textarea
+        .ck-editor__editable[role="textbox"] {
+            /* editing area */
+            min-height: 200px;
+        }
+
+//html code
+    {!! Form::label('description', 'Description', ['class'=>'mb-2']) !!}
+    {!! Form::textarea('description', null, ['class'=>'form-control mb-3', 'placeholder'=>'Enter post description']) !!}
+
+
+
+
+

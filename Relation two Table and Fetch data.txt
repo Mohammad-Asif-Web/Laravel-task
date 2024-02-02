@@ -1,0 +1,89 @@
+**********Read two table relational data by model****************
+*২টি টেবিলের সাথে সর্ম্পক করে ডাটা fetch করাই এর কাজ।  relation database
+related কাজ করে .  database related কাজ করে model।  তো 'model' এর ভিতর 
+function এর মাধ্যমে কাজ করতে হবে।  আমারা যে  model গুলোcreate করি এরা সবাই  main 'Model' কে extends করে। তাই যদি  main 'Model' এর কোনো  function ব্যবহার করতে হয় তাহলে '$this' দ্বারা  call করতে হবে।  
+
+*one to one relation এর জন্যে ২টা function ব্যবহার হয়। এখন কোন function কখন use করবো এটা নির্ভর করে foreign key এর উপর। তাই আগে দেখতে হবে foreign key কোন টেবিলে আছে।
+
+*hasOne: আমি যেই টেবিলে আছি এই টেবিলে পরির্বতে foreign key যদি অন্য টেবিলে থাকে তাহলে  hasOne ব্যবহার করবো।
+
+*belongsto: আমি যেই টেবিলে আছি foreign key যদি এই টেবিলে থাকে তাহলে  belongsto ব্যবহার করবো। 
+অন্য টেবিলের primary id কে  foreign id বানাতে হলে এবং অন্য টেবিলের ডাটা গুলো এদিকে নিয়ে আসতে হলে  belongs to ব্যবহার করতে হবে।
+
+1) যদি  Sub category প্যানেলে category টেবিলের ডাটা নিয়ে আসতে হয়: 
+তাহলে বুঝা যাচ্ছে ১টা ক্যাটাগরির  under এ অনেক গুলি subcategory থাকতে পারে। তাই এদিকে 
+sub_category = many, এবং  category = one‍. 
+যেহেতু  subcategory তে categorir ডাটা  আনতে হচ্ছে, তাই relation হবে 'many to one'.
+
+****মডেলের ব্যবহার*****
+*তো আমরা 'SubCategory' model থেকে 'Category' model এর সাথে সর্ম্পক করবো।  'subcategory' Model এ গিয়ে 'category' model এর নাম অনুযায়ি function create করতে হবে। 
+class Task extends Model
+{
+  use HasFactory;
+  protected $guarded = [];
+
+  public function category()
+  {
+    return $this->belongsTo(Category::class);
+  }
+}
+
+****Controller behohar****
+যেহেতু ২টা টেবিল relation করে ডাটা পাঠানো হচ্ছে, তাই 'with()' ব্যবহার করতে হবে। মডেলে যে  function তৈরী করা হইছে সেটি 'with()' ফাংশনের ভিতরে রাখতে হবে। 
+'SubCategory::all()' এর পরির্বতে 'SubCategory::with('category')->get(); দিয়ে  data read করতে হবে। 
+
+EagerLoading: 'with()' function charao data asbe, kintu onek gulo query backend e run hobe abong page loading hote onek somoy nibe. tai 'with()' add kre dile ai loading krte somoy ney na. atakei eagerloading bole. optimization er jnne use kra hoy.
+
+public function index()
+{
+   $sub_categories = SubCategory::with('category')->orderBy('order_by')->get();
+   return view('backend.modules.sub-category.index', compact('sub_categories'));
+}
+
+ata single show page er jnne. custom 'category' function jeta modele create kra hoise seta 'load()' function e bole dite hoy.
+public function show()
+{
+   $subCategory->load('category');
+   return view('backend. modules.sub-category.show', compact('subCategory'));
+}
+
+
+***********html index view page***************
+SubCategory মডেলে যে custom 'category' function তৈরী হইছে সেটার মাধ্যমে Category table থেকে ডাটা আনতে হবে।
+
+@foreach($sub_categories as $sub_category)
+<tbody>
+  <tr>
+    <td>{{$sub_category->category?->name}}</td>
+  </tr>
+</tbody>
+$endforeach
+
+*****html show view page*****
+<tr>
+ <th>Category</th>
+ <td>{{$subCategory->category?->name}}</td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eagerLoading

@@ -1,0 +1,7 @@
+*Routes folder 4 dhoroner routes file thake. api,channels,console,web name. jdi breeze package install kra hoy tahle notun kore 'auth.php' namer akti file jog hoy. but prodhan routes file holo 'web.php'. akti software/website er routes akhan thekei kaj kore. tai alada kono file e routes create krleo ai dike directory require bole dite hoy. ex:
+require __DIR__.'/auth.php';
+
+*Facades: ati hocche akti class. kono class er function use krte hole oi class adike Facades akare upore likhe dite hoy. jemon Routes er vitore jesob Controller use kra hoy, sei Controller er alada Namespace thake, jate ai namespace use kre er vitore class gulo bebohar kra hoy. ai namespace guloi routes e Facades hoye jay. tai upore valo mto facades import krte hobe jei controller er class bebohar kra hocche. Ex: 
+
+use Illuminate\Support\Facades\Route;  <-- ata Route file er default Facades.
+use App\Http\Controllers\Backend\BackendController; <-- BackendController class er function gulo behoharer jnne ai Facades likhe dite hoise.

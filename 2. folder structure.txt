@@ -35,7 +35,7 @@ database>seeders -- যদি আমি আগে থেকেই real data data
 
 **lang -- language, localization নিয়ে কাজ করে।
 
-**public -- আমাদের  application এর css, js, images, icons অর্থাৎ প্রধান এসেট গুলো এদিকেই রাখা হয়।
+**public -- আমাদের  application এর css, js, images, icons অর্থাৎ প্রধান এসেট গুলো এদিকেই রাখা হয়। route er kono url er sathe folder er name same rakha jabe na, tahle error dibe, kintu error msg paowa jabe na.
 
 **resources->view -- এর ভিতরে আমাদের সব html file গুলো থাকে।  আমাাদের main file গুলো
 			এদিক থেকেই run করবে।	

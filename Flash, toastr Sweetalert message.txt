@@ -1,0 +1,90 @@
+*Controller store function:
+we can send message my session()->flash(); abong ai session diyei flash/toastr/alert sob dhoroner message index file e pathano hoy. tai default vabe controller theke ai session er dhara message pathate hobe.
+
+public function store(TaskStoreRequest $request)
+{
+        Task::create($request->all());
+        session()->flash('msg', 'Task Created Successfully');
+        session()->flash('cls', 'success');
+        return redirect()->route('task.index');
+
+}
+
+jei route url e redirect krsi, message gulo sedikei jabe. akhon view file e jeye nicher file gulo jeta drkar bosiye nibo
+
+***********For Flash Messages************
+*html index view page:
+@if(session()->has('msg'))
+<div class="alert alert-{{ session('cls') }}">
+  {{ session('msg') }}
+</div>
+@endif
+
+
+************For toastr Alert************
+first you need to add CDN or css/js file.
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+*html view file: jdi kono session messages pay tahlei alert dibe.
+@if (session('msg'))
+    @push('js')
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            })
+            Toast.fire({
+                icon: '{{ session('cls') }}',
+                title: '{{ session('msg') }}'
+            })
+        </script>
+    @endpush
+@endif
+
+Note: we must use stack('js) in the 'script.blade.php' file. After that, add this js code by @push('js')
+
+***********For Sweet Alert Message************
+2) this is for delete methods.
+when we will click on any delete button first it will show a pop-up
+sweet alert box. if we click 'ok' it will delete that data or the data
+will be safe.
+
+at the html form delete option we have to add this--
+
+{{-- delete --}}
+<form method="post" action="{{route('category.destroy', $category->id)}}">
+   @csrf
+   @method('delete')
+   <button type="submit" class="btn btn-sm btn-danger show-alert-delete-box">
+      <i class="fa-solid fa-trash"></i>
+   </button>
+</form>
+
+after that, we have to add sweet alert js code inside @push('js')
+@push('js')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('click', '.show-alert-delete-box', function(event){
+            var form =  $(this).closest("form");
+
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure you want to delete this record?",
+                text: "If you delete this, it will be gone forever.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush

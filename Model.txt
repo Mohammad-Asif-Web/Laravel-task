@@ -1,0 +1,77 @@
+===============================Model================================
+
+*model কি করে --  আমাদের মাইগ্রেশনের যে ফাইল থাকে সেটা মেপিং করে, ডাটাবেস থেকে  ডাটা আনতে পারি, সেন্ড করতে পারি।
+ডাটাবেসের প্রতিটি টেবিলের জন্যে একটি করে মডেল থাকে, যেটি টেবিলের সাথে ডিরেক্ট ব্যবহার হয়। মডেল ব্যবহার করেই সেই টেবিলের ডাটা ইনসার্ট/আপডেট/ডিলেট করা হয়।
+
+শুধু মডেল তৈরী করতে কমান্ড
+--'php artisan make:model Product'
+
+একসাথে কন্ট্রোলার, মডেল, মাইগ্রেশন seeder তৈরী করতে কমান্ড  
+--'php artisan make:model Product -rsm'
+
+এক মডেল কমান্ডের মাধ্যমেই Controller,Model,Migrations,Request, Policies 
+সবকিছু তৈরী করতে command:
+--'php artisan make:model Product --all'
+
+যেদিকে Model তৈরী হইসে->
+app>Models>product.php
+
+যেদিকে Model এর  Migration তৈরী হইসে->
+database>migrations>2022_05_22_14343_create_products_table.php
+
+*database এর ভিতরে table থাকে, table এর ভিতর data store থাকে। আর table এর  data আনা নেয়া হয়  model এর মাধ্যমে। তাই প্রতি  table এর জন্যে  model & migration বানাতে হয়। 
+Model এর file capitalyze হবে। EX:- UserData.php
+
+*মডেল তৈরী হওয়ার পরে $fillable ও  $guarded নামে দুইটা ভেরিয়েবল থাকে।
+$fillable ব্যবহার করতে হয় শুধুমাত্র কয়েকটা (২/৫) field এর ডাটার জন্যে, আর সেই  field এর নাম গুলো ভিতরে বলে দিতে হবে।
+$fillable = ['title','name','id'];
+$guarded ব্যবহার করতে হয় অনেক বেশী (অসংখ্য/কয়েকশো/হাজার) field নিয়ে কাজ করতে। তখন শুধু খালি ব্লাংক array দিলেই হয়ে যায়। ভিতরে কোনো field বলে দিতে হয় না।
+$guarded = [];
+
+*Migration এ table নাম সব সময় plural হবে (মানে model যে নামে তৈরী হইসে তার সাথে s যুক্ত হবে), এটা Laravel এর convention.
+*যদি 's' যুক্ত না করি তাহলে  model সেই  table কে চিনবে না,  error দিবে। আর এই error solve করতে model এর মধ্যে table টা বলে দিতে হবে।  example:-
+class Product extends Model
+{
+  use HasFactory;
+  protected $table = 'task';
+  protected $guarded = [];
+}
+
+**অথবা**
+class Product extends Model
+{
+	use HasaFactory;
+	$fillable = ['title','name','id'];
+
+}
+
+*মডেলের সাথে 'migration,factory,seeder,controller,policy' তৈরী করতে শুধু কমান্ডে ফ্লাগ(--) দিয়ে এদের নাম লিখে কমান্ড রান করলেই generate হয়ে যাবে।
+php artisan make:model Product --factory
+php artisan make:model Product --migration
+.....
+
+*এছাড়া ডাটাবেসে টেবিলের কোনো  কলাম পরিবর্তন করতে চাইলে মডেলে কাস্টম ভাবে বলে দিতে হবে। ex-
+class Product extends Model
+{
+	protected $primaryKey = 'product_id';
+	public $timestamps = false;  // It will remove 'created_at' and 'updated_at' columns, if you don't want it
+	// if need to customize the timestamps column name, we can change it.
+	const CREATED_AT = 'creation_date'; 
+	const UPDATED_AT = 'updated_date';
+	protected $dateFormat = 'U';  // It will change date format
+	// যদি অন্য কোনো database connection করতে হয় তাহলে এইভাবে মডেলে লিখে দিতে হবে
+	protected $connection = 'sqlite';
+	
+}
+
+**Retrieving Model data by Query Builder
+মডেল তৈরী করার পর  database থেকে সহজেই  query builder এর মতো করে ডাটা আনা যায়। প্রতিটা eloquent model কে একটি  powerful query builder মনে করা যায়। তাই controller এর দ্বারা সেই ডাটা গুলো আনা হয়।
+use App/Models/Product;
+
+foreach(Product::all() as $product) 
+{
+	echo $product-name;
+}
+ 
+..or to retrieve specific data from database.. 
+$product = Product::where('active', 1)->orderBy('name')->take(5)->get();

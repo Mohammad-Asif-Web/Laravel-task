@@ -24,23 +24,7 @@ public function boot()
 }
 
 
-****************Flash Message Section*****************
-*******html index view page********
-@if(session()->has('msg'))
-<div class="alert alert-{{ session('cls') }}">
-  {{ session('msg') }}
-</div>
-@endif
 
-********Controller store function*******
-public function store(TaskStoreRequest $request)
-{
-        Task::create($request->all());
-        session()->flash('msg', 'Task Created Successfully');
-        session()->flash('cls', 'success');
-        return redirect()->route('task.index');
-
-}
 
 ******** Custom Error Page Hangle ******
 views এর ভিতরে  'errors' নামে ফোল্ডার তৈরী করতে হবে। এই ফোল্ডারে ইরর code অনুযায়ি পেজ তৈরী করে দিলে লারাভেল  অটোমেটিক নিয়ে নিবে।

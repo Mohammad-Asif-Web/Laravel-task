@@ -1,17 +1,23 @@
-22001: String data, right truncated: 1406 Data too long for column 'title'.
+1. 22001: String data, right truncated: 1406 Data too long for column 'title'.
 meaning: ai column e limit er besi data deya hoise. check validation for how much character is limited for this input field.
 
-SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+2. SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
 meaning: database connection hoy ni, xampp server e mysql admin on hoy ni
 
-409: THIS ACTION IS UNAUTHORIZED
+3. 409: THIS ACTION IS UNAUTHORIZED
 Meaning: 'Request' er moddhe 'authorize' false ase.
 
-General error: 1364 Field 'state' doesn't have a default value
+4. General error: 1364 Field 'state' doesn't have a default value
 meaning: 'state' field null deya ase. ata nullable kore dite hobe
 
+5. Missing required parameter for [Route: category.update] [URI: dashboard/category/{category}] [Missing parameter: category].
+meaning: Form action er route e 'category.update' er sathe oi categoryr id deya hoy ni. ex: 
+{!! Form::model($category, ['method'=>'put', 'route'=>['category.update', $category->id]]) !!}
+,,or,,
+<form method="put" action="{{route('category.update', $category->id)}}">
 
-
+6. Target class [App\Http\Controllers\TagController] does not exist.
+meaning: Route file uporer facades ti vul ache, valo vabe correct namespace/facades use krte hobe.
 
 
 

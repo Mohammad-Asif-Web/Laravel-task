@@ -1,10 +1,6 @@
-**********Read two table relational data by model****************
+ 
 
-*২টি টেবিলের সাথে সর্ম্পক করে ডাটা fetch করাই এর কাজ।  relation database
-related কাজ করে আর database related কাজ করে model।  তো 'model' এর ভিতর 
-function এর মাধ্যমে কাজ করতে হবে। 
-*আমারা যে  model গুলোcreate করি এরা সবাই  main 'Model' কে extends করে।
-তাই যদি  main 'Model' এর কোনো  function ব্যবহার করতে হয় তাহলে '$this' দ্বারা  call করতে হবে। 
+
 *তো আমরা 'Task' model থেকে 'User' model এর সাথে সর্ম্পক করবো।  'Task' Model এ গিয়ে 'User' model এর নাম অনুযায়ি function create করতে হবে। 
 class Task extends Model
 {
@@ -19,10 +15,7 @@ class Task extends Model
   }
 }
 
-one to one relation এর জন্যে ২টা function ব্যবহার হয়। এখন কোন function কখন use করবো এটা নির্ভর করে foreign key এর উপর। তাই আগে দেখতে হবে foreign key কোন টেবিলে আছে।
-1) hasOne: আমি যেই টেবিলে আছি এই টেবিলে পরির্বতে foreign key যদি অন্য টেবিলে থাকে তাহলে  hasOne ব্যবহার করবো।
 
-1) belongsto: আমি যেই টেবিলে আছি foreign key যদি এই টেবিলে থাকে তাহলে  belongsto ব্যবহার করবো। jdi arek table er primary id ke foreign id banate chai, ar sei table er data gulo adike ante chai tahle belongs to
 
 **********controller index function**************
 *তারপর 'TaskController' এ 'index' function আছে, এটা থেকেই  data compact করে 

@@ -3,17 +3,18 @@ Controller এর file capitalyze হবে। EX:- FrontendController.php
 Controller এর মাধ্যমে ফর্ম থেকে ডাটা  আনতে হবে। Controller থেকে ডাটা সেন্ড করতে হবে ডাটাবেসে, 
 তো এর জন্যে মডেল আর মাইগ্রেশন এর দরকার হবে। তাই প্রথমে Controller তৈরী করতে হবে।
 
-**Controller তৈরী করার command 
+*Controller তৈরী করার command 
 'php artisan make:controller Mycontroller'
 
-**CRUD related function create করতে command 
+*CRUD related function create করতে command 
 'php artisan make:controller FrontendController --r'
 
 এই --r diye command run করলে ৭ টা crud related function তৈরী হয়।
 এই 7 টা function আলাদা আলাদা কাজের জন্যে রাখা হইসে।
 index, create, store, show, edit, update, destroy
 
---index: এটা 'GET' request handle করে একটি ডাটার লিস্ট retrieve করতে।
+*********** public function index()***********
+ এটা 'GET' request handle করে একটি ডাটার লিস্ট retrieve করতে।
     public function index()
     {
         $examples = Example::all();
@@ -21,14 +22,16 @@ index, create, store, show, edit, update, destroy
         return view('examples.index', compact('examples'));
     }
 
---create: এটাও 'GET' request এর মাধ্যমে  handle করা হয়। একটি নতুন resource create 
+***********public function create()***********
+এটাও 'GET' request এর মাধ্যমে  handle করা হয়। একটি নতুন resource create 
 করতে  form show করা হয়। 
     public function create()
     {
         return view('examples.create');
     }
 
---store: এটা 'post' request এর মাধ্যমে  handle করা হয়। 'create' function এর মাধ্যমে 
+***********public function store()***********
+এটা 'post' request এর মাধ্যমে  handle করা হয়। 'create' function এর মাধ্যমে 
 যে  form show করা হইসে, ওই  form submit করে নতুন  data store করা হয় 
 'store' function এর দ্বারা। 
     public function store(Request $request)
@@ -44,7 +47,8 @@ index, create, store, show, edit, update, destroy
             ->with('success', 'Example created successfully');
     }
 
---show: কোনো নির্দিষ্ট একটি ডাটাকে show করাতে এটা ব্যবহার করা হয়। handle by the 'GET' request.
+***********public function show()***********
+কোনো নির্দিষ্ট একটি ডাটাকে show করাতে এটা ব্যবহার করা হয়। handle by the 'GET' request.
     public function show($id)
     {
         $example = Example::findOrFail($id);
@@ -52,7 +56,8 @@ index, create, store, show, edit, update, destroy
         return view('examples.show', compact('example'));
     }
 
---edit: Handle by the 'GET' Request. কোনো নির্দিষ্ট একটি ডাটার form show করাতে 
+***********public function edit()***********
+Handle by the 'GET' Request. কোনো নির্দিষ্ট একটি ডাটার form show করাতে 
 এটা ব্যবহার করা হয়। আমরা যে  data কে  update করবো, ওইটার  form টা এই 'edit' function
  এ show করানো হয়। এটা create function এর মতো কাজ করে, শুধু '$id' add করতে হয় 
 নির্দিষ্ট data form show করার জন্যে.
@@ -63,10 +68,17 @@ index, create, store, show, edit, update, destroy
         return view('examples.edit', compact('example'));
     }
 
---update: যখন আমি ডাটা edit করে update বাটনে ক্লিক করবো, তখন নতুন data গুলো 
+***********public function update()***********
+যখন আমি ডাটা edit করে update বাটনে ক্লিক করবো, তখন নতুন data গুলো 
 update হবে এই function থেকে। 'edit' function এ যে form টি  show করানো হইসে, 
 ওইটার data নতুন করে update করতে 'update' function add করা হয়। এটাও 'store' 
 function এর মতো কাজ করে. শুধু '$id' দিয়ে নির্দিষ্ট data কে ধরে update করা হয়। 
+
+$request diye 'edit.blade.php'view file theke form er data gulo notun vabe update kre request kre ana hoy.
+
+$category diye er model diye database theke data retrieve kre sei updated view file 'edit.blade.php' te valuer jnne use kra hoy.
+
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -82,7 +94,8 @@ function এর মতো কাজ করে. শুধু '$id' দিয়ে �
     }
 'edit' + 'update'(with $id) === 'create' + 'store'(without $id)
 
---destroy: Handle by the 'delete' Request. কোনো নির্দিষ্ট একটি ডাটাকে delete 
+***********public function destroy()***********
+Handle by the 'delete' Request. কোনো নির্দিষ্ট একটি ডাটাকে delete 
 করাতে এটা ব্যবহার করা হয়।
     public function destroy($id)
     {

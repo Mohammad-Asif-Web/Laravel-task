@@ -1,43 +1,10 @@
-
-=================Model================================
-database এর ভিতরে table থাকে, table এর ভিতর data store থাকে। আর table এর  data আনা নেয়া হয়  model এর মাধ্যমে। তাই প্রতি  table এর জন্যে  model & migration বানাতে হয়। 
-Model এর file capitalyze হবে। EX:- UserData.php
-
-Migration এ table নাম সব সময় plural হবে (মানে model যে নামে তৈরী হইসে তার সাথে s যুক্ত হবে), এটা Laravel এর convention.
-*যদি 's' যুক্ত না করি তাহলে  model সেই  table কে চিনবে না,  error দিবে। আর এই error solve করতে model এর মধ্যে table টা বলে দিতে হবে।  example:-
-class Product extends Model
-{
-  use HasFactory;
-  protected $table = 'task';
-}
-
-*যেদিকে Model তৈরী হইসে->
-app>Models>product.php
-
-*যেদিকে Model এর  Migration তৈরী হইসে->
-database>migrations>2022_05_22_14343_create_products_table.php
- 
-model কি করে --  আমাদের মাইগ্রেশনের যে ফাইল থাকে সেটা মেপিং করে, ডাটাবেস থেকে  ডাটা আনতে পারি, সেন্ড করতে পারি।
-ডাটাবেসের প্রতিটি টেবিলের জন্যে একটি করে মডেল থাকে, যেটি টেবিলের সাথে ডিরেক্ট ব্যবহার হয়। মডেল ব্যবহার করেই সেই টেবিলের ডাটা ইনসার্ট/আপডেট/ডিলেট করা হয়।
-
-** শুধু মডেল তৈরী করতে কমান্ড
---'php artisan make:model Product'
-
-**একসাথে কন্ট্রোলার, মডেল, মাইগ্রেশন তৈরী করতে কমান্ড  
---'php artisan make:model Product -rm'
-
-**এক মডেল কমান্ডের মাধ্যমেই Controller,Model,Migrations,Request, Policies 
-সবকিছু তৈরী করতে command:
---'php artisan make:model Product --all'
-
-
 ==================== Migration =============================
 
-মাইগ্রেশন কি -- আমরা SQL ডাটাবেসে গিয়ে টেবিল তৈরী করি না, একটা ফাইল তৈরী করি। tarpor database>migration forlder 
-er vitore je 'table.php' file gulo thake সেটাতে আমাদের টেবিলের 
-schema স্ক্রিপচার ডিফাইন করি. তারপর একটা কমান্ড চালানো হয়  ’php artisan migrate’ নামে, আর এইভাবেই আমাদের ডাটাবেসে এর সাথে মাইগ্রেট হয়ে যায়। এবং এর সাথে আমাদের মডেলের ও দরকার হয়।
-
-
+মাইগ্রেশন কি -- Laravel এ কাজ করতে  MySQL ডাটাবেসে টেবিলের ভিতরে field গুলো schema করে তৈরী করতে হয়। একটা  migration ফাইল তৈরী করতে হয়। এটার লোকেশন->
+database>migration
+আর ফাইল নামের ধরন সবসময় plural থাকে-> 2022_03_Products_table.php' 
+তো এই ফাইলের ভিতরে আমরা টেবিলের field গুলো লিখে দেই, যেটাকে টেবিলের schema বলা হয়। তারপর এই schema গুলো MySQL ডাটাবেসে টেবিল field রুপে generate করতে একটি কমান্ড চালাতে হয়। 'php artisan serve'
+তাহলে automatic migrate হয়ে যায়। আর অবশ্যই আগে মডেল তৈরী করা থাকতে হবে। Model singular নামের হবে আর সেই মডেলের Model migrations নাম হবে plural. 
 
 //table column type
 **integer = int type
