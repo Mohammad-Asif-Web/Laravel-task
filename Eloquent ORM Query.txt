@@ -17,14 +17,16 @@ public $timestamps = false;
 all(), get(), paginate() -- এরা সবাই multiple ডাটা fetch করে array আকারে। 
 এরে ডাটা ইকো করতে লুপ চালাতে হয়।
 
+pluck('id','name') -- atao array akare data fetch kore.
+
 1)'select * from tasks' = Task::all();
 
 2) Task::paginate(20); ২০ টি ডাটা দেখাবে।
 
-3) Task::latest()->paginate(20); ডিসেন্ডিং আকারে ডাটা দেখাবে।
+3) Task::latest()->paginate(20); ডিসেন্ডিং আকারে ডাটা দেখাবে। mane akdom last e jei reocrd add kra hoise.
 
 4) Task::with('user')->orderBy('title', 'asc')->paginate(50); 
-'title' field এর উপর এসেন্ডিং আকারে  অর্ডার করে ৫০ টা ডাটা  দেখাবে, যা 'Task' এবং 'User' এর সাথে সর্ম্পকিত।
+'title' field এর উপর এসেন্ডিং আকারে  অর্ডার করে ৫০ টা ডাটা  দেখাবে, যা 'Task' এবং 'User' এর সাথে সর্ম্পকিত। dui table er relational data record show krbe.
 
 5)short form: orderBy('title') and orderByDesc('title').
 

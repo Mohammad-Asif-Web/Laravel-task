@@ -6,6 +6,8 @@ and ends execution of the script: works like javascript console
 2. asset('') ->css,js,image files direct public folder theke link krar jnne ai function use
 kra hoy
 
+6. url() --
+
 3. name('')-> ati route er sese jukto kra hoy. jokhon kono route ke variable baniye rakha hoy onno
 page e dakar jnne tokhon 'route('')' function er vetor variable dilei hoye jabe.
 EX: Route::('blog', [Controller::class], function(){
@@ -15,19 +17,30 @@ EX: Route::('blog', [Controller::class], function(){
 4. aksathe model,controler,seeders,migration create krte command
 'php artisan make:model Task -rsm'
 
-5. compact() --
+5. compact() -- er maddhome controller theke data view page e compact kore pathano hoy. 
+Ex: $categories = Category::orderBy('order_by')->get();
+    return view('backend.modules.category.index', compact('categories'));
 
-6. url() --
+6. Str::slug -- slug er vetor string ke format krar jnne ai method use kra hoy, jate kono 'whitespace' thakle seta '-'hiphen e convert hoy. obossoi Controller file er upor 'use Illuminate\Support\Str;' jukto krte hobe. ar slug sob somoy unique rakhte 'Request' e form validation er vetor unique rakhte hobe. Ex:
+'slug' => 'required|min:3|max:255|unique:posts',
 
 7. @auth, @else, @endauth --
 
 8. Session::flush() --
+
 9. Auth::logout() -- 
+
+10. Auth::user()->id;  -- je user login obosthay ache tar id ami pabo.
+ex: $post_data['user_id'] = Auth::user()-id;
+
 10. with() -- 
+
 11. @stack('js') ata receive kore @push('js') @endpush()
-12. Srt::slug -- Convert a string to a safe version to be used in a URL, 
+
+12. Str::slug -- Convert a string to a safe version to be used in a URL, 
    so that special character not to be allowed on the url. must use this
-'use Illuminate\Support\Str;' in the top of controllers. 
+'use Illuminate\Support\Str;' in the top of controllers.
+ex: $post_data['slug'] = Str::slug($request->input('slug'));
 
 
 

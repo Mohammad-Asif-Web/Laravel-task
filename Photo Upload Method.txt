@@ -1,0 +1,72 @@
+prothome akti package install krte hobe, Laravel Intervention Image. ex:
+'composer require intervention/image'
+ai command run krlei latest package install hobe
+
+*** make additional controller for photo upload and remove***
+photo upload and remove onek page kora hobe, tai bar bar code na lekhe, er jnne akti controller baniye nite hobe. Controller create krar por sobar age 'Intervention Image' er duita Facades require krte hobe.
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
+class PhotoUploadController extends Controller
+{
+  public static function imageUpload($name, $height, $width, $path, $file)
+  {
+     $manager = new ImageManager(new Driver());
+     // ata hocche full imager nam
+     $image_name = $name.'.webp';
+     $img = $manager->read($file);
+     $img = $img->resize($width,$height)->save(public_path($path).$image_name, 50, 'webp');
+     return $image_name;
+  }
+
+  public static function imageUnlink($path, $name)
+  {
+     $image_path = public_path($path).$name;
+     if(file_exists($image_path)){
+        unlink($image_path);
+     }
+  }
+}
+
+ai controller e parameter hisebe $name, $height, $width, $path and $file deya ache, jekono photo niye kaj krte ai data gulo lagei, tai deya hoyeche.
+
+***main Controller for create data****
+akhon jei controller  theke data create krte hobe, sedike value gulo ante hobe. dhori 'post' controller theke kaj krte hobe.
+
+public function store(PostCreateRequest $request)
+{
+   // jdi 'photo' namer file thake tahle ai statement e dukba, na hoy drkar nai
+   if($request->hasFile('photo'))
+   {
+   // 'photo' ke $file variable e rakhlam
+   $file = $request->file('photo');
+
+   // photo take akta unique name dibo, tai 'slug' use krlam, kintu jdi multiple photo thake tahle ai onno vabe nam dite hobe. karon ai name sob photo  thakte pare na. ai method sudhu single photor jnne, karon akti page e akbar e use hoy
+   $name = Str::slug($request->input('slug'));
+
+   // photor full version height width path
+   $width = 1000;
+   $height = 400;
+   $path = 'images/original/';
+
+   // photor thumbnail version height width path
+   $thumb_width = 300;
+   $thumb_height = 150;
+   $thumb_path = 'images/thumbnail/';
+
+   // imageUpload function theke 'name' return krtese, tai ai name $post_data['photo] te rakhar jnne puro function ke ai $post_data['photo] te rakha hoise. imageUpload ke akti static function akare banano hoise.
+   $post_data['photo'] =  PhotoUploadController::imageUpload($name, $height, $width, $path, $file);
+   PhotoUploadController::imageUpload($name, $thumb_height, $thumb_width, $thumb_path, $file);
+   }
+
+     Post::create($post_data);
+
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+form theke akti category select krle tar under e onno sub category gulo dropdown e show krbe. frontend theke category id backend er url e pathate hobe, abong sei category id under e jtogulo Sub Cateogory thakbe suguloke fetch krbe. ati krte Axios use krte hobe. Axior er maddome url create kre, sei url diye id pathate hobe.
+
+**First Step 'create Route'**
+prothome jei url dara category id send krte hobe sei url er route create krte hobe. EX:
+Route::get('/get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
+
+note: jdi er route er kono resource age theke create kra thake, tahle ai route ti sei 'Route::resource' er upor dite hobe. na hoy error dite thakbe. karon akti 'Route::resource' er under e default vabe 7 ta route thake. jehetu amra custom vabe arekti route create krsi tai sei custom route ti resource route er upor rakhte hobe. ex:
+Route::get('/get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
+Route::resource('/sub-category', SubCategoryController::class);
+
+**Second Step 'create Controller function'**
+sadharonto, akti table theke record fetch krte hole kono akti field er dhara match kore data fetch kra hoy. jemon SubCategory table e 'category_id' name akti field ache,  tai 'route::get()' er dhara jei id pathano hobe setar sathe match kore subCategory table theke data fetch kra hobe.
+
+public function getSubCategoryByCategoryId(int $id)
+{
+  $sub_categories = SubCategory::select('id','name')->where('category_id', $id)->get();
+  return response()->json($sub_categories);
+}
+
+--sudhu 'id' and 'name' drkar tai 'select' use kra hoise,
+--'category_id' er sathe '$id' match kra hoise.
+--response()->json() use kra hoise data wrap kore js e pathano hobe.
+
+note: jehetu subCategory theke data fetch kra hobe tai controller function subCategory te kra hoise, karon subCategory model use kre data ana hobej.
+
+**Third Step 'html view page'
+<div class="col-md-6">
+  {!! Form::label('category_id', 'Select Category', ['class'=>'mt-2']) !!}
+	ata category element, ata theke category select krte hobe
+  {!! Form::select('category_id', $categories, null, ['id'=>'category_id', 'class'=>'form-select', 'placeholder'=>'Select category']) !!}
+</div>
+<div class="col-md-6">
+  {!! Form::label('sub_category_id', 'Select Sub Category', ['class'=>'mt-2']) !!}
+	ata sub category element, category select krle adike sub Category show krbe
+  <select name="sub_category_id" id="sub_category_id" class="form-select">
+
+  </select>
+</div>
+
+	'Js Script'
+<script>
+//  সাব ক্যাটাগরির 'Select' ট্যাগ ধরা হইসে 'Form' থেকে
+let selectElement = $('#sub_category_id');
+// ক্যাটাগরি থেকে Category id ধরা হইসে 
+let categoryId = $('#category_id');
+// রাউটার থেকে শুধু ডোমেইন নাম ধরতে  window.location.origin ধরা হইসে।
+let domainName = window.location.origin;
+categoryId.on('change', function(){
+  let categoryId = $(this).val();
+  let subCategoryValues;
+      //প্রতিবার  ক্যাটগরি সিলেক্ট করার পর আগের সাব-ক্যাটাগরি যাতে না থাকে, তাই লিংক হিট করার আগে সাব-ক্যাটাগরির সাথে empty() ব্যবহার করা হইসে।
+      //যে route url তৈরী করা হইসে সেটা axios.get() এর মাধ্যমে categorId নিয়ে ব্যাকেন্ডে পাঠানো হইসো, যাতে এই ডাটার সাথে ম্যাচ করে সাব ক্যাটাগরি ডাটা এদিকে নিয়ে আসা যায়।
+  selectElement.empty();
+  selectElement.append(`<option>Select Sub Category</option>`)
+  axios.get(`${domainName}/dashboard/get-subcategory/${categoryId}`).then(result => {
+    subCategoryValues = result.data; 
+                
+    subCategoryValues.map(subCategoryItem=>{
+      // console.log(item.name);
+      selectElement.append(`<option value="${subCategoryItem.id}">${subCategoryItem.name}</option>`);
+    })
+  })
+})
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

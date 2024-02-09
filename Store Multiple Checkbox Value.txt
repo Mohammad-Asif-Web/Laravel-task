@@ -1,0 +1,35 @@
+**Laravel Collective Form index view**
+sobgulo tag ke foreach er maddhome loop akare ana hoise. tai proti tag er 'name' hobe 'tags_ids[]'. adike name er sathe 'array[]' deya hoise, jate sob gulo value array akare paoya jay, na hoy jekono akti value pathabe.
+{!! Form::label('tag_id', 'Select Tag', ['class'=>'mt-2']) !!}
+<div class="row">
+ @foreach ($tags as $tag)
+  <div class="col-md-3">
+   {!! Form::checkbox('tag_ids[]', $tag->id, false); !!} <span>{{$tag->name}}</span>
+  </div>
+ @endforeach
+</div>
+
+**Normal Form index view**
+<div class="form-group">
+ <label><strong>Category :</strong></label><br>
+ @foreach ($tags as $tag)
+  <label><input type="checkbox" name="tags_ids[]" value="{{$tag->id}}"> {{$tag->name}}</label>
+ @endforeach
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
