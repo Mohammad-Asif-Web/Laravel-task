@@ -1,4 +1,4 @@
-==========================Laravel Folder Structure=================================
+=========Laravel Folder Structure==========
 **app -- এর ভিতরে সব class আকারে থাকে । প্রধান logical part গুলির প্রসেসিং (database 
 handle, controlling, models) সব এখান থেকে হয়।
 app>provider --  এইদিকে কিছু সেটিং থাকে।

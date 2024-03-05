@@ -1,43 +1,43 @@
 mastering
 
 
-prothome model,controller,migration aksathe create krte command run krte hobe. ex:
+প্রথমে model,controller,migration একসাথে তৈরী করতে হবে কমান্ড রান করে। ex:
 ->php artisan make:model Tag -rsm
 
-tarpor CRUD related blade file gulo views er vitor create krte hobe.ex:
+তারপর CRUD রিলেটেড blade ফাইল গুলো views এর ভিতর তৈরী করতে হবে। ex:
 1. create.blade.php
 2. edit.blade.php
 3. index.blade.php
 4. show.blade.php
 
-Route er web.php file e giye CRUD er sobgulo method related resource create krte hobe. ex:
+Route ফোল্ডারের web.php ফাইলে গিয়ে CRUD এর সবগুলো মেথুড রিলেটেড resource তৈরী করতে হবে। ex:
 Route::('/tag', TagController::class);
-sudhu atotukui likhte hoy. laravel 9,10 automatic vabe eder route link/url/name kre rakhse. ar upore valo vabe Controller gulo 'Facades' namespace use krte hobe.
+শুধু এতাটুকুই লিখতে হয়, লারাভেল 9,10 এদের route link/url/name রেডি করে রাখসে। তারপর উপরে ভালো মতো Controller গুলোর 'Facades' namespace যুক্ত করতে হবে।
 
 *First Step 'create function'
-to jekono crud krte hole age data insert krte hoy. ar data insert krte hole form create krte hobe. tai Controller theke 'create' function e return view krte hobe 'create.blade.php' file e. adike form banate hobe. 
+crud করতে গেলে আগে ডাটা insert করতে হয়। আর ডাটা ইনসার্ট করতে form তৈরী করতে হবে। তাই Controller এ 'create' ফাংশন থেকে  return করতে হবে view 'create.blade.php' ফাইলে। এদিকেই ফর্ম বানাতে হবে।
 
 *create table schema in migration
-form banano sese data store krte hobe database e. tai database e column field gulo banate hobe. sejonno migrations schema create krte hobe, migrations folder er modde 'create tags table' file ase. atatei database er schema banate hobe. 
+form বানানো শেষ হলে ডাটাবেসের টেবিলে ডাটা স্টোর করতে হবে। তাই মাইগ্রেশন ফাইল বানাতে হবে ফর্ম  ইনপুট ফিল্ড দেখে। শেষে মাইগ্রেশন কমান্ড রান করলে মাইগ্রেশন স্কিমাতে দেয়া ফিল্ড গুলো নিয়ে টেবিল তৈরী করবে। ex: 'php artisan migrate'
 
-*model 
-ktogulo data send krbo sugulo modele bole dite hobe. jdi onek data thake tahle sudhu 'protected $guarded = [];' dilei hoye jabe. er por amder migration run krte hobe. ex: 'php artisan migrate'
-tahle schema te design kra field gulo database er 'Tag' table e create hoye jabe.
+*model
+কতগুলো ডাটা সেন্ড করবো সেগুলো মডেলে বলে দিতে হবে। যদি ডাটা অনেক থাকে তাহলে শুধু 'protected $guarded = [];' দিলেই হয়ে যাবে। 
+আর যদি কয়েকটা নির্দিষ্ট ডাটা সেন্ড করতে চাই তাহলে $fillable = ['']; এর মধ্যে সেই ফিল্ডের নেম গুলো বলে দিলেই শুধু সেগুলোই নিবে।
 
 *store data by 'store' function
-akhon data store krte hobe. tai ebar 'controller' e ese 'store' function e data request krar o validate krar code likhte hobe. sob kichu thik thakle form submit krle data database e chole jabe.
+এখন ডাটা স্টোর করতে হবে। তাই এবার 'controller' এ এসে 'store' ফাংশনে ডাটা request এবং validate এর কোড লিখতে হবে। সবকিছু ঠিক থাকলে ফর্ম সাবমিট করলে ডাটা ডাটাবেসে চলে যাবে।
 
 *Read data from database in index file
-akhon ai database er datagulo ke read krte hobe. abar Controller e 'index' function e dataguloke fetch kre aktu variable e rakhte hobe, abong sei variable return view e compact kre 'index.blade.php' file e pathate hobe. sekhane compact kra varibale theke data gulo read krte hobe. eder sathe alert message, error message add krte hobe.
+এখন ডাটাবেস থেকে ডাটাগুলোকে read করতে হবে। এবার Controller 'index' ফাংশনে কুয়েরি করে  ডাটাবেস থেকে ডাটাগুলোকে ফেচ করে একটি ভেরিয়েবলে রাখতে হবে। এবং সেই ভেরিয়েবল return করতে হবে view দ্বারা compact করে 'index.blade.php' ফাইলে পাঠাতে হবে। 'index.blade.php' ফাইলে আসার পর foreach loop ব্যবহার করে  compact করা varibale থেকে ডাটা গুলো read করতে হবে। এদের সাথে alert message, error message যুক্ত করে দিতে হবে flash,session এর মাধ্যমে।
 
 *show single data by 'show' function
-controller e jeye 'show.blade.php' file e return krte hobe data compact kore abong sei data show page e add krte hobe.
+controller এ গিয়ে 'show.blade.php' ফাইলে রিটার্ণ করতে হবে data compact করে এবং সেই ডাটা  show পেজে এড করতে হবে।
 
 *update single data 
-controller theke edit function diye edit.blade.php file e jeye edit form banate hobe(same as create) sudhu value gulo bosiye dite hobe. pore abar controller theke update function er maddhome data update krte hobe
+controller থেকে ইডিট ফাংশন দিয়ে edit.blade.php ফাইলে ইডিট ফর্ম বানাতে হবে। শুধু ভেল্যু গুলো বসিয়ে দিতে হবে। পরে আবার controller থেকে update ফাংশনের মাধ্যমে ডাটা update করতে হবে।
 
 *last delete the data
-
+controller থেকে delete ফাংশনের মাধ্যমে ডাটা ডিলেট করতে হয়।
 
 
 

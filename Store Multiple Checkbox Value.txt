@@ -1,5 +1,6 @@
 **Laravel Collective Form index view**
-sobgulo tag ke foreach er maddhome loop akare ana hoise. tai proti tag er 'name' hobe 'tags_ids[]'. adike name er sathe 'array[]' deya hoise, jate sob gulo value array akare paoya jay, na hoy jekono akti value pathabe.
+সবগুলো ট্যাগকে foreach লুপের মাধ্যমে আনা হইছে। তাই প্রতি ট্যাগের 'name' হবে 'tags_ids[]'.
+এদিকে  'name' এর সাথে 'array[]' দেওয়া হইছে, যাতে সবগুলো ভেল্যু array হিসেবে পাওয়া যায়, না হয় যেকোনো একটি ভেল্যু পাঠাবে।
 {!! Form::label('tag_id', 'Select Tag', ['class'=>'mt-2']) !!}
 <div class="row">
  @foreach ($tags as $tag)

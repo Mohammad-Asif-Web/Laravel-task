@@ -1,23 +1,23 @@
 1. 22001: String data, right truncated: 1406 Data too long for column 'title'.
-meaning: ai column e limit er besi data deya hoise. check validation for how much character is limited for this input field.
+meaning: এই কলামে লিমিটের বেশি ডাটা দেয়া হইছে। validation রুলস চেক করা উচিত কতগুলো ক্যারেক্টারের লিমিট দেয়া হইছে। 
 
 2. SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
-meaning: database connection hoy ni, xampp server e mysql admin on hoy ni
+meaning: ডাটাবেস কানেক্টেড হয়নি। xampp সার্ভারে  mysql এডমিন অন হয়নি।
 
 3. 409: THIS ACTION IS UNAUTHORIZED
-Meaning: 'Request' er moddhe 'authorize' false ase.
+Meaning: 'Request' এর মধ্যে 'authorize' false দেয়া আছে।
 
 4. General error: 1364 Field 'state' doesn't have a default value
-meaning: 'state' field null deya ase. ata nullable kore dite hobe
+meaning: 'state' field টি খালি। এটা  nullable করে দিতে হবে। 
 
 5. Missing required parameter for [Route: category.update] [URI: dashboard/category/{category}] [Missing parameter: category].
-meaning: Form action er route e 'category.update' er sathe oi categoryr id deya hoy ni. ex: 
+meaning: Form action এর রাইটে 'category.update' এর সাথে ওই category id দেয়া হয়নি। ex: 
 {!! Form::model($category, ['method'=>'put', 'route'=>['category.update', $category->id]]) !!}
 ,,or,,
 <form method="put" action="{{route('category.update', $category->id)}}">
 
 6. Target class [App\Http\Controllers\TagController] does not exist.
-meaning: Route file uporer facades ti vul ache, valo vabe correct namespace/facades use krte hobe.
+meaning:রাউট ফাইল উপরের facades টি ভুল আছে, ভালোভাবে সঠিক namespace/facades যুক্ত করতে হবে।
 
 
 

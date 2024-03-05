@@ -1,0 +1,72 @@
+1) প্রথমে .env ফাইলে  mail integration code এড করতে হবে। maltrap/google web এর যেকোনো একটা দিয়ে চেক করলেই হয়। ex: 
+
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=002354323446ac
+MAIL_PASSWORD=8d5464d87d85d0
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="laravelblog@asif.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+
+2) Mail তৈরী করতে কমান্ড রান করতে হবে, এবং মেইলের সাথে কোন ভিউ ফাইল ইমেইল টেমপ্লেট হিসেবে থাকবে সেই ফাইলের নাম 'markdown' কমান্ডে বলে দিতে হবে।
+-php artisan make:ContactMail --markdown=emails.contact_us
+
+'http' ফোল্ডারে  Mail ফোল্ডার তৈরী হবে, এবং এর ভিতরে ContactMail.php ফাইল থাকবে। 
+'views' ফোল্ডারে emails ফোল্ডার তৈরী হবে, এবং এর ভিতরে contact_us.blade.php ফাইল থাকবে। এই 'contact_us.blade.php' ফাইলটি email template হিসেবে মেইলে যাবে।
+
+3) যেই controller থেকে  ডাটাবেসে মেইলের ডাটা সেন্ড করা হইছে, সেই sei controller থেকে  'Mail::to()' ফাংশন দ্বারা 'ContactMail' ফাইলে ডাটা পাঠাতে হবে। Ex: 
+
+ $contact = Contact::create($request->all());
+ session()->flash('cls', 'success');
+ session()->flash('msg', 'Your Message Sent Successfully');
+ Mail::to($contact->email)->send(new ContactMail($contact->toArray()));
+ return redirect()->back();
+
+ContactMail() একটি object. এর ভিতর ডাটা দিলে তা প্যারামিটার আকারে কন্সট্রাক্ট ফাংশনে নিয়ে নিবে, যা এর ফাইলের ভিতরের মেথুড গুলোতে ব্যবহার করা যাবে। তাই এর ভিতরে array তে কনভার্ট করে  ডাটা পাঠানো হইসে।
+
+4)  ContactMail.php পেজে  Controller থেকে ডাটা গুলো পাঠানো হইসে। তাই ডাটা গুলোকে এর ভিতরে থাকা মেথুড গুলো ব্যবহার করতে __construc() এর ভিতর নিতে হয়েছে।
+
+private $contact;
+public function __construct($contact)
+ {
+    $this->contact = $contact;
+ }
+
+public function envelope(): Envelope
+ {
+    return new Envelope(
+       subject: 'Contact Mail From Laravel Stand Blog',
+    );
+ }
+
+public function content(): Content
+ {
+    return new Content(
+        markdown: 'emails.contact_us',
+        with: ['contact' => $this->contact],
+    );
+ }
+
+'envelop()' ফাংশনে মেইলের সাবজেক্ট লেখা হয়।
+'content()' ফাংশন মেইলের মেইন বডি, যা মেইন ডাটা গুলোকে ভিউ পেজে পাঠায়।
+'markdown' এ ভিউ পেজের নাম দেয়া থাকে।
+'with' এর দ্বারা ডাটা গুলোকে ভিউ পেজে পাঠানো হয় এরে আকারে।
+
+5) 'contact_us' ভিউ পেজে আসার পর যেভাবে ডাটা পাঠাতে হবে।
+
+<h2>{{$contact['subject']}}</h2>
+<h2 class="name">Name: {{$contact['name']}}</h2>
+<p>Email: {{$contact['email']}}</a></p>
+<p>Phone: {{$contact['phone']}}</p>
+<p>Message: {{$contact['message']}}</p>
+
+
+
+
+
+
+
+
+

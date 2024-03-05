@@ -1,0 +1,16 @@
+'AppServiceProvider' হচ্ছে default service provider. Laravel application সম্পূর্ণভাবে রান হওয়ার আগেই 'appServiceProiver' execute হয়। মানে যেই জিনিস গুলি আগে দরকার সেগুলোকে আগেই লোড করে দেয় 'appServiceProvider'. ex: router, configuration, আরো অনেক কিছু আছে, এগুলো ঠিক মতো লোড না নিলে পেজ লোড নিবে না।
+
+register() Method: যখন service providers রেজিস্টার হতে থাকে, তখন register() মেথুড কল হয়। এই ফাংশনে কোনো কিছু না লেখাই ভালো, শুধু মাত্র data binding, singletons এর জন্যে ব্যবহার করা হয়।
+
+boot() Method: সবগুলো service provider রেজিস্টার হয়ে যাওয়ার পর boot() method কল হয়। 
+
+*Must Know: boot() এ কোনো কুয়েরি লিখলে মাইগ্রেশন করার সময় ইরর দিবে, তাই প্রতিবার মাইগ্রেট করার সময়  boot() এর ভেতর থাকা কুয়েরি কমেন্ট করে মাইগ্রেট করতে হবে।
+
+ex-1: boot() এ যদি console করি, যেমন dd('boot'); তাহলে যে পেজে যাই না কেনো 'boot' প্রিন্ট হবে। তাই এটাই প্রমান করে, boot() এ কিছু লিখলে সেটা সব পেজে যুক্ত হয়ে যায়।
+
+ex-2: ডাটা পাঠাতে চাইলে 'View::share' এর দ্বারা ডাটা সেন্ড করা যায়।
+$categories = Category::where('status', 1)->orderBy('order_by', 'asc')->get();
+View::share(['my_categories' => $categories]);
+note: উপরে অবশ্যই  'Model' and 'View' এর  namespace যুক্ত করতে হবে।
+
+ex-3: View::composer() দিয়ে নির্দিষ্ট রাউটে ডাটা পাঠানো যায়। তাহলে সব দিকে ডাটা যুক্ত হবে না, আর এটাই ভালো প্রাকটিস।

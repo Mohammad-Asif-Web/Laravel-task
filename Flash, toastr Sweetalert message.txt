@@ -1,5 +1,5 @@
 *Controller store function:
-we can send message my session()->flash(); abong ai session diyei flash/toastr/alert sob dhoroner message index file e pathano hoy. tai default vabe controller theke ai session er dhara message pathate hobe.
+আমরা মেসেজ পাঠাতে পারি session()->flash(); এর দ্বারা। এবং এই সেসন দিয়েই flash/toastr/alert সব ধরনের মেসেজ ইনডেক্স ফাইলে পাঠানো হয়। তাই  default ভাবে controller থেকে এই সেশনের দ্বারা মেসেজ পাঠাতে হয়।
 
 public function store(TaskStoreRequest $request)
 {
@@ -10,7 +10,7 @@ public function store(TaskStoreRequest $request)
 
 }
 
-jei route url e redirect krsi, message gulo sedikei jabe. akhon view file e jeye nicher file gulo jeta drkar bosiye nibo
+যেই route url এ রিডিরেক্ট করসি, মেসেজ গুলো সেদিকেই যাবে। এখন  view ফাইলে যেয়ে নিচের ফাইল গুলো যেটা দরকার বসিয়ে নিবো।
 
 ***********For Flash Messages************
 *html index view page:
@@ -25,7 +25,7 @@ jei route url e redirect krsi, message gulo sedikei jabe. akhon view file e jeye
 first you need to add CDN or css/js file.
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-*html view file: jdi kono session messages pay tahlei alert dibe.
+*html view file: যদি কোনো সেশন মেসেজ পায় তাহলে এলার্ট দিবে।
 @if (session('msg'))
     @push('js')
         <script>

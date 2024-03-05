@@ -1,9 +1,9 @@
-prothome akti package install krte hobe, Laravel Intervention Image. ex:
+প্রথমে একটি প্যাকেজ ইনস্টল করতে হবে, Laravel Intervention Image. ex:
 'composer require intervention/image'
-ai command run krlei latest package install hobe
+এই কমান্ড রান করলেই লেটেস্ট প্যাকেজ ইনস্টল হবে।
 
 *** make additional controller for photo upload and remove***
-photo upload and remove onek page kora hobe, tai bar bar code na lekhe, er jnne akti controller baniye nite hobe. Controller create krar por sobar age 'Intervention Image' er duita Facades require krte hobe.
+ছবি আপলোড এবং রিমুভ করা অনেক বার করা হতে পারে, তাই বার বার কোড না লিখে, এর জন্যে একটি কন্ট্রোলার বানিয়ে নিতে হবে। কন্ট্রোলার তৈরী করার পর সবার আগে 'Intervention Image' এর দুইটা Facades যুক্ত করতে হবে।
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -28,20 +28,20 @@ class PhotoUploadController extends Controller
   }
 }
 
-ai controller e parameter hisebe $name, $height, $width, $path and $file deya ache, jekono photo niye kaj krte ai data gulo lagei, tai deya hoyeche.
+এই কন্ট্রোলারে প্যারামিটার হিসেবে $name, $height, $width, $path and $file দেয়া আছে, যেকোনো ছবি নিয়ে কাজ করতে এই ডাটা গুলো লাগেই, তাই দেওয়া হয়েছে।
 
 ***main Controller for create data****
-akhon jei controller  theke data create krte hobe, sedike value gulo ante hobe. dhori 'post' controller theke kaj krte hobe.
+একন যেই  কন্ট্রোলার থেকে ডাটা তৈরী করতে হবে, সেদিকে ভেল্যু গুলো আনতে হবে। ধরি 'post' কন্ট্রোলার থেকে কাজ করতে হবে।
 
 public function store(PostCreateRequest $request)
 {
-   // jdi 'photo' namer file thake tahle ai statement e dukba, na hoy drkar nai
+   // যদি 'photo' নামের ফাইল থাকে তাহলে এই statement এ ঢুকবে, নাহয় দরকার নাই
    if($request->hasFile('photo'))
    {
-   // 'photo' ke $file variable e rakhlam
+   // 'photo' কে $file ভেরিয়েবলে রাখলাম
    $file = $request->file('photo');
 
-   // photo take akta unique name dibo, tai 'slug' use krlam, kintu jdi multiple photo thake tahle ai onno vabe nam dite hobe. karon ai name sob photo  thakte pare na. ai method sudhu single photor jnne, karon akti page e akbar e use hoy
+   // ছবিটাকে একটা ইউনিক নাম দিবো, তাই 'slug' ব্যবহার করলাম, কিন্তু যদি অনেক ছবি থাকে তাহলে এদিকে অন্য ভাবে নাম দিতে হবে, কারন একই নাম সব ছবিতে থাকতে পারে না। এই মেথুড শুধু সিংগেল ছবির জন্যে, কারন একটি পেজ একবারই ব্যবহার হয়।
    $name = Str::slug($request->input('slug'));
 
    // photor full version height width path
@@ -54,7 +54,7 @@ public function store(PostCreateRequest $request)
    $thumb_height = 150;
    $thumb_path = 'images/thumbnail/';
 
-   // imageUpload function theke 'name' return krtese, tai ai name $post_data['photo] te rakhar jnne puro function ke ai $post_data['photo] te rakha hoise. imageUpload ke akti static function akare banano hoise.
+   // imageUpload ফাংশন থেকে 'name' রিটার্ন করছে, তাই এই নাম $post_data['photo] তে রাখার জন্যে পুরো ফাংশন কে এই  $post_data['photo] তে রাখা হইছে। imageUpload কে একটি static ফাংশন আকারে বানানো হইছে।
    $post_data['photo'] =  PhotoUploadController::imageUpload($name, $height, $width, $path, $file);
    PhotoUploadController::imageUpload($name, $thumb_height, $thumb_width, $thumb_path, $file);
    }

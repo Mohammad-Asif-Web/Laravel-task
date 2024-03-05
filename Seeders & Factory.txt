@@ -59,9 +59,9 @@ fakerphp একটি  প্যাকেজ ফেক ডাটা জেনা
 $this->faker->lastName();
 $this->faker->state();
 
-tar por database>seeders>DatabaseSeeder.php file e jete hobe. sedike jei table er data generate krbo tar model import krte hobe
+তারপর database>seeders>DatabaseSeeder.php ফাইলে যেতে হবে। সেদিকে যেই টেবিলের ডাটা জেনারেট করবো তার মডেল ইমপোর্ট করতে হবে।
 use App\Models\Task
-run() function er moddhe ktogulo data generate krbo blte hobe
+run() ফাংশেনে কতগুলো ডাটা জেনারেট করবো বলতে হবে।
 
 class DatabaseSeeder extends Seeder
 {
@@ -70,12 +70,11 @@ class DatabaseSeeder extends Seeder
     Task::factory()->count(10)->create();
   }
 }
-
-sob kicu thik thakle database e ai comman run krte hobe
+সব কিছু ঠিক থাকলে ডাটাবেসে এই কমান্ড রান করতে হবে-
 'php artisan db:seed'
-tahle data generate hoye jabe.
+তাহলে ডাটা জেনারেট হয়ে যাবে।
 
-ar ager data remove kore aksathei new data add krte
+আর আগের ডাটা রিমুভ করে একসাথেই নতুন ডাটা যুক্ত করতে-
 'php artisan migrate:fresh --seed'
 
 

@@ -42,6 +42,6 @@ install সম্পূর্ণ হলে একটি  debug bar অটো এ
     {!! Form::textarea('description', null, ['class'=>'form-control mb-3', 'placeholder'=>'Enter post description']) !!}
 
 
-
+******Laravel Collective Form******
 
 

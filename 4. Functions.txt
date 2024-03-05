@@ -1,28 +1,24 @@
 =================Laravel Functions==================
+1. dd(app()) -> stands for 'dump and die' function. This function dumps the given variables and ends execution of the script: works like javascript console
 
-1. dd(app()) -> stands for 'dump and die' function. This function dumps the given variables 
-and ends execution of the script: works like javascript console
-
-2. asset('') ->css,js,image files direct public folder theke link krar jnne ai function use
-kra hoy
+2. asset('') ->css,js,image files সরাসরি  public folder থেকে লিংক করার জন্যে এই ফাংশন ব্যবহার করা হয়।
 
 6. url() --
 
-3. name('')-> ati route er sese jukto kra hoy. jokhon kono route ke variable baniye rakha hoy onno
-page e dakar jnne tokhon 'route('')' function er vetor variable dilei hoye jabe.
+3. name('')-> এটি রাউটের শেষে যুক্ত করা হয়। যখন কোনো রাউটকে ভেরিয়েবল বানিয়ে রাখা হয়, লিংকে ব্যবহারের জন্যে তখন 'route('')' ফাংশনের ভেতর ভেরিয়েবল দিলেই হয়ে যাবে।
 EX: Route::('blog', [Controller::class], function(){
 	return view('blog');
 })->name('blog');
 
-4. aksathe model,controler,seeders,migration create krte command
-'php artisan make:model Task -rsm'
+4. একসাথে model,controler,seeders,migration তৈরী করতে 'php artisan make:model Task -rsm'
 
-5. compact() -- er maddhome controller theke data view page e compact kore pathano hoy. 
+5. compact() -- এর মাধ্যমে controller থেকে ডাটা ভিউ পেজে  compact করে পাঠানো হয়।
 Ex: $categories = Category::orderBy('order_by')->get();
     return view('backend.modules.category.index', compact('categories'));
 
-6. Str::slug -- slug er vetor string ke format krar jnne ai method use kra hoy, jate kono 'whitespace' thakle seta '-'hiphen e convert hoy. obossoi Controller file er upor 'use Illuminate\Support\Str;' jukto krte hobe. ar slug sob somoy unique rakhte 'Request' e form validation er vetor unique rakhte hobe. Ex:
+6. Str::slug -- slug এর ভেতর স্ট্রিং কে format করার জন্যে এই মেথুড ব্যবহার করা হয়। যাতে কোনো 'whitespace' থাকলে সেটা  '-'  হাইফেনে কনভার্ট করা হয়। অবশ্যই Controller ফাইলের উপর 'use Illuminate\Support\Str;' যুক্ত করতে হবে।  আর slug সব সময় উইনিক রাখতে 'Request' এ  form validation এর মধ্যে  ’unique’ বলে দিতে হবে। Ex:
 'slug' => 'required|min:3|max:255|unique:posts',
+$post_data['slug'] = Str::slug($request->input('slug'));
 
 7. @auth, @else, @endauth --
 
@@ -30,26 +26,30 @@ Ex: $categories = Category::orderBy('order_by')->get();
 
 9. Auth::logout() -- 
 
-10. Auth::user()->id;  -- je user login obosthay ache tar id ami pabo.
+10. Auth::user()->id;  -- যে ইউজার লগিন অবস্থায় আছে তার  id পাওয়া যাবে।
 ex: $post_data['user_id'] = Auth::user()-id;
 
-10. with() -- 
+10. with() -- এই ফাংশন দিয়ে ভিউ পেজে ডাটা পাঠানো হয়। 
 
-11. @stack('js') ata receive kore @push('js') @endpush()
+11. @stack('js') এটা রিসিভ করে  @push('js') @endpush()
 
-12. Str::slug -- Convert a string to a safe version to be used in a URL, 
-   so that special character not to be allowed on the url. must use this
-'use Illuminate\Support\Str;' in the top of controllers.
-ex: $post_data['slug'] = Str::slug($request->input('slug'));
+12. in the Controller, we have code which uses pluck() directly in the Eloquent query:
+$roles = Role::pluck('name', 'id');
+
+And then in the Blade, we would show all the roles as options of a dropdown select:
+
+<select name="role_id">
+    @foreach($roles as $id => $role)
+        <option value="{{ $id }}">{{ $role }}</option>
+    @enforeach
+</select>
 
 
-
-
-dd($request->all()) -- form theke sob data ante
-dd($request->input('name')) -- jdi single input er data drkar hoy
-dd($request->only('user_id', 'name') -- jdi multiple input value drkar hoy
-dd($request->except('name') -- 'name' bade baki sob data dekhabe
-dd($request->exists('email') -- check kre ai value ta ase kina, true/false
+dd($request->all()) -- form থেকে সব ডাটা আনতে।
+dd($request->input('name')) -- যদি সিংগেল ইনপুটের ডাটা দরকার হয়।
+dd($request->only('user_id', 'name') -- শুধু এই ডাটা গুলোই নিবে।
+dd($request->except('name') --  'name' বাদে বাকি সব ডাটা নিবে।
+dd($request->exists('email') -- চেক করে এই ভেল্যু আছে কিনা?
 
 
 

@@ -1,0 +1,56 @@
+যদি আমরা posts and tag নিয়ে চিন্তা করি, একটি tag অনেক গুলো পোস্টের হতে পারে, আবার একটি পোস্ট অনেক গুলো ট্যাগের হতে পারে. এখন ডাটাবেসের একই টেবিলে একটি পোস্টের জন্যে অনেকগুলো ট্যাগ, একটি ট্যাগের জন্যে অনেক গুলো পোস্ট রাখা যায় না, তাই এদের জন্যে আলাদা টেবিল বানাতে হয়, আর এই টেবিলকে বলা হয় pivot table.
+
+suppose: post id no.1 এ tag id আছে = 1, 2, 3
+tag_id no. 1 এ post-id আছে = 5, 6, 7
+এই দুইটি কলামের pivot table যেমন হবে।
+
+post_id		tag_id
+   1		1
+   1		2
+   1		3
+   5		1
+   6		1
+   7		1
+
+লারাভেলে pivot table তৈরী করার কিছু রূল আছে।
+1) টেবিল দুইটির নাম singular হতে হবে।
+2) অক্ষরের দিক দিয়ে যার অক্ষর আগে পড়বে তার নাম আগে হবে। ex:
+post এবং tag এর মধ্যে 'p' অক্ষর 't' অক্ষরের আগে হয়। তাই টেবিল নাম হবে 'post_tag'।
+
+এখন post_tag টেবিল তৈরী করতে command:
+-> php artisan make:migration create_post_tag_pivot_table --create=post_tag
+
+**table Schema**
+public function up()
+ Schema::create('post_tag', function(Blueprint $table) {
+  $table->id();
+  $table->foreignId('post_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+  $table->foreignId('tag_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+  $table->timestamps();
+});
+   
+এখন মাইগ্রেট করলেই এই টেবিল তৈরী হয়ে যাবে।
+
+**model**
+যেহেতু post মডেল থেকে  ডাটার সম্পর্ক করছি ট্যাগের সাথে, তাই post মডেলে ফাংশন বানাতে হবে, এবং এই ফাংশন post কন্ট্রোলারে ব্যবহার করে ট্যাগের ডাটা ব্যবহার করতে পারবো। 
+ফরেন আইডি নিজের কাছে তাই belongsTo, আর এটা মেনি টু মেনি রিলেশন তাই Many। দুটোকে একসাথে বললে হয় belongsToMany।  ex:
+public function tag()
+{
+  return $this->belongsToMany(Tag::class);
+}
+
+**Controller**
+যেহেতু post controller এর মাধ্যমে ডাটা পাঠাচ্ছি, তাই post::create এর মেথুড একটি ভেরিয়েবলে রাখতে হবে।
+$post = Post::create($post_data);
+$post->tag()->attach($request->input('tag_ids'));
+
+
+
+
+
+
+
+
+
+
+

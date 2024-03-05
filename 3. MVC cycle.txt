@@ -1,5 +1,5 @@
 
-======================================MVC request Cycle=========================================
+============MVC request Cycle============
 MVC = Model View Controller
 MVC Processing cycle = আমি যে page দেখতে চাচ্ছি, url এ সেই page এর নাম লিখে সার্চ করতে হবে।
 সার্চ করার পরে প্রথমে  routing system process করবে। route এ দেখবে সে  url define করা আসে কিনা?যদি থাকে তাহলে ওই url এর জন্যে যে 'Controller' create করা হইসে, ওই Controller এর যে function use করা হইসে ওই  function এ যাবে। তারপর যদি data লাগে তাহলে ওই function এ যে 'Model' use করা হইসে ওখান থেকে  data আনবে। তারপর এই data return করতে হয় ওই 'view()' তে create করা page e, যেই page দেখার জন্যে url hit করা হইসিলো।
@@ -14,7 +14,7 @@ MVC Processing cycle = আমি যে page দেখতে চাচ্ছি,
 7. Data Response (the Controller formats
  the data and send to users and user see it --------> View
 
-==========================How Route pointed to the Controller===============================
+======How Route pointed to the Controller===========
 example: <a href="{{url('user-list')}}">Get User List</a>
 '<a>' tag এর ভিতরে যে url সেট করসি,সেটা যদি  Route এ  add না করি তাহলে সেই url ('user-list') 
 দিয়ে সার্চ করলে page পাবে না। 

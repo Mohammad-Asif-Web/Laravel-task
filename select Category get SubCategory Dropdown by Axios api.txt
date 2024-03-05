@@ -1,15 +1,15 @@
-form theke akti category select krle tar under e onno sub category gulo dropdown e show krbe. frontend theke category id backend er url e pathate hobe, abong sei category id under e jtogulo Sub Cateogory thakbe suguloke fetch krbe. ati krte Axios use krte hobe. Axior er maddome url create kre, sei url diye id pathate hobe.
+ফর্ম থেকে একটি ক্যাটেগরি সিলেক্ট করলে তার আন্ডারে অন্য সাব ক্যাটাগরি গুলো ড্রপডাউন বক্সে শো করবে। ফ্রন্টেন্ড থেকে ক্যাটাগরি আইডি বেকেন্ডে ইউ্আরএলে পাঠাতে হবে, এবং সেই ক্যাটাগরির আন্ডারে যতগুলো সাব ক্যাটাগরি থাকবে সেগুলোকে ফেচ করবে। এটি করতে এক্সিউজ ব্যবহার করতে হবে। এক্সিউজের মাধ্যমে একটি লিংক তৈরী করে, সেই লিংকের মাধ্যমে ক্যাটাগরি আইডি বেকেন্ডে পাঠাতে হবে।
 
 **First Step 'create Route'**
-prothome jei url dara category id send krte hobe sei url er route create krte hobe. EX:
+প্রথমে যেই লিংক দ্বারা ক্যাটাগরি আইডি সেন্ড করতে হবে, সেই লিংকের রাউট তৈরী করতে হবে। EX:
 Route::get('/get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
 
-note: jdi er route er kono resource age theke create kra thake, tahle ai route ti sei 'Route::resource' er upor dite hobe. na hoy error dite thakbe. karon akti 'Route::resource' er under e default vabe 7 ta route thake. jehetu amra custom vabe arekti route create krsi tai sei custom route ti resource route er upor rakhte hobe. ex:
+note: যদি এই রাউটের কোন resource আগে থেকেই তৈরী করা থাকে তাহলে এই রাইটটি সেই 'Route::resource' এর উপরে দিতে হবে না হয় ইরর দিতে থাকবে। কারন একটি 'Route::resource' এর ভিতরে default ভাবে 7 টা রাউট থাকে। যেহেতু আমরা কাস্টম ভাবে আরেকটি রাউট তৈরী করছি তােই সেই কাস্টম রাইট টি  resource রাইটের উপর রাখতে হবে। ex:
 Route::get('/get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
 Route::resource('/sub-category', SubCategoryController::class);
 
 **Second Step 'create Controller function'**
-sadharonto, akti table theke record fetch krte hole kono akti field er dhara match kore data fetch kra hoy. jemon SubCategory table e 'category_id' name akti field ache,  tai 'route::get()' er dhara jei id pathano hobe setar sathe match kore subCategory table theke data fetch kra hobe.
+সাধারনত, একটি টেবিল থেকে রেকর্ড ফেচ করতে হলে কোনো একটি ফিল্ডের দ্বারা ম্যাচ করে ডাটা ফেচ করা হয়।  যেমন  SubCategory টেবিলে 'category_id' নামে একটি ফিল্ড আছে, তাই 'route::get()' এর দ্বারা যেই id পাঠানো হবে সেটার সাথে ম্যাচ করে subCategory টেবিল থেকে ডাটা ফেচ করা হবে।
 
 public function getSubCategoryByCategoryId(int $id)
 {
@@ -17,21 +17,21 @@ public function getSubCategoryByCategoryId(int $id)
   return response()->json($sub_categories);
 }
 
---sudhu 'id' and 'name' drkar tai 'select' use kra hoise,
---'category_id' er sathe '$id' match kra hoise.
---response()->json() use kra hoise data wrap kore js e pathano hobe.
+--শুধু 'id' এবং 'name' দরকার তাই 'select' ব্যবহার করা হইছে।
+--'category_id' সাথে '$id' ম্যাচ করা হইছে।
+--response()->json() ব্যবহার করা হইছে ডাটা  wrap করে js এ পাঠানো হবে।
 
-note: jehetu subCategory theke data fetch kra hobe tai controller function subCategory te kra hoise, karon subCategory model use kre data ana hobej.
+note: যেহেতু subCategory থেকে ডাটা ফেচ করা হবে তাই controller ফাংশন subCategory তে করা হইছে। কারন subCategory মডেল ব্যবহার করে ডাটা আনা হবে।
 
 **Third Step 'html view page'
 <div class="col-md-6">
   {!! Form::label('category_id', 'Select Category', ['class'=>'mt-2']) !!}
-	ata category element, ata theke category select krte hobe
+	এটা category ইলেমেন্ট, এটা থেকে category সিলেক্ট করতে হবে।
   {!! Form::select('category_id', $categories, null, ['id'=>'category_id', 'class'=>'form-select', 'placeholder'=>'Select category']) !!}
 </div>
 <div class="col-md-6">
   {!! Form::label('sub_category_id', 'Select Sub Category', ['class'=>'mt-2']) !!}
-	ata sub category element, category select krle adike sub Category show krbe
+	এটা  sub category ইলেমেন্ট ,  category সিলেক্ট করলে এদিকে sub Category শো করবে।
   <select name="sub_category_id" id="sub_category_id" class="form-select">
 
   </select>
