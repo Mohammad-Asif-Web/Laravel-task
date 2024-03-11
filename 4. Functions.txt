@@ -35,14 +35,25 @@ ex: $post_data['user_id'] = Auth::user()-id;
 
 12. in the Controller, we have code which uses pluck() directly in the Eloquent query:
 $roles = Role::pluck('name', 'id');
-
 And then in the Blade, we would show all the roles as options of a dropdown select:
-
 <select name="role_id">
     @foreach($roles as $id => $role)
         <option value="{{ $id }}">{{ $role }}</option>
     @enforeach
 </select>
+
+13. @isset($profile)
+	<img src="{{asset('images/user/'.$profile->photo)}}"
+    @endisset
+যদি  $profile থাকে তাহলে <img> ইলেমেন্ট যুক্ত হবে।
+
+14. ager url paowar method.
+$urlPrevious = url()->previous();
+
+15. user id paowar bivinno upay. controller, blade e akoi vabe user id paowa jay.
+$Auth::user()->id;
+	$userID = Auth::id();
+$userID = auth()->id();
 
 
 dd($request->all()) -- form থেকে সব ডাটা আনতে।
