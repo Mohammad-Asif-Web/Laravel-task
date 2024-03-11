@@ -1,0 +1,153 @@
+========Manupulation Methods========
+Get text() value : var str = $("p").text();
+Set text() value : $("p").text("This is demo text.");
+
+Get html() value : var str = $("p").html();
+Set html() value : $("body").html("<p>Hello World!</p>");
+
+Get attr() value : var str = $("a").attr("href");
+Set attr() value : $('#img').attr('src', '');
+
+Set multiple attr() value: $("img").attr({
+            			"class" : "frame",
+            			"title" : "Hot Air Balloons"
+        		   });
+
+val() Method : $('input[type="text"]#name').val();
+	       $("textarea#comment").val();
+	       $("select#city").val();
+Set Values with val() Method: var text = $(this).text();
+       			      $('input[type="text"]').val(text);
+
+append() Method: $("p").append(' <a href="#">read more...</a>');
+prepend() Method: $("p").prepend("<strong>Note:</strong> ");
+
+before() Method: $("h1").before('<img src="images/marker-left.gif">');
+after() Method : $("h1").after('<img src="images/marker-right.gif">');
+
+empty() Method: $(".container").empty()
+remove(): $("p.hint").remove();
+removeAttr() Method: $("a").removeAttr("href");
+
+addClass() Method: $("h1").addClass("page-header");
+removeClass() Method: $("h1").removeClass("page-header");
+toggleClass() Method: toggleClass("highlight");
+
+Get CSS Property Value:  var color = $(this).css("background-color");
+Set CSS Property Value: $("p").css("background-color", "blue");
+Multiple CSS Property : $("p").css({ "background-color": "yellow", 
+				     "padding": "20px"
+				   });
+
+================ Traversing ===============
+				<body>
+				  |
+				<div>
+				  |
+  -----------------------------------------------------------------
+  |				  |				  |
+<h1>				 <p>				 <ul>
+				  |				  |
+				  |			-------------------
+				  |			|		  |
+				<em>		      <li>		 <li>
+
+Ancestor = পূবপুরুষ/পিতৃপুরুষ/প্রধানবাহক,  Descendant = বংশধর,   
+parent = মাতা, পিতা, child = সন্তান, siblings = ভাইবোন
+1. The <body> element is the parent of the <div> element, 
+   and an ancestor of everything inside of it. 
+2. The enclosed <div> element is the parent of <h1>, <p> and <ul> elements, 
+   and a child of the <body> element.
+3. The elements <h1>, <p> and <ul> are siblings, since they share the same parent.
+4. The <p> element is the parent of <em> element, child of the <div> element 
+   descendant of the <body> element and Siblings are <h1> and <ul>.
+
+parent() Method: $("li").parent().addClass("highlight");
+parents() Method: $("li").parents().addClass("frame");
+
+children() Method: $("ul").children().addClass("highlight");
+find() Method: $("div").find("li").addClass("frame");
+
+siblings() Method: 	  $("p").siblings().addClass("highlight");
+select specific siblings: $("p").siblings("ul").addClass("highlight");
+next() Method:  $("p").next().addClass("highlight");
+prev() Method:    $("ul").prev().addClass("highlight");
+
+first() Method: $("ul li").first()
+last() Method:  $("ul li").last()
+select by number eq() Method: $("ul li").eq(1)
+has() Method:  $("ul li").has("ul")
+slice() Method:  $("ul li").slice(0, 2)
+
+=======Selectors=======
+Selecting Elements by ID: $("#mark")
+Selecting Elements by Class Name: $(".mark")
+Selecting Elements by Name: $("p")
+Selecting Elements by Attribute: $('input[type="text"]')
+Selecting Elements by CSS Selector: $("ul#mark li"), $("ul.mark li"), $("ul li")
+
+=======Events=========
+1. alert: alert("Hello World!");
+
+2. Mouse Events:-
+click() method: $('#p').on('click', function(){
+hover() Method: $("p").hover(function(){
+mouseenter() Method: $("p").mouseenter(function(){
+mouseleave() Method: $("p").mouseleave(function(){
+trigger() Method: $('#reset').trigger('click')
+
+3. Keyboard Events:-
+keypress() Method: $('input[type="text"]').keypress(function(){
+keydown() Method: $('input[type="text"]').keydown(function(){
+keyup() Method: $('input[type="text"]').keyup(function(){
+
+4. Form Events:-
+change() Method: $("select").change(function(){
+submit() Method: $("form").submit(function(event){
+
+5. Document Events:-
+ready() Method: $(document).ready(function(){
+resize() Method: $(document).ready(function(){
+    		    $(window).resize(function() {
+scroll() Method: $(document).ready(function(){
+    		    $(window).scroll(function() {
+
+=======Animation Effects=======
+show() Methods: $("p").hide(50); //number of miliseconds
+hide() Methods: $("p").show(50);
+toggle() Method: $("p").toggle();
+slideUp() Method: $("p").slideUp();
+slideDown() Method: $("p").slideDown();
+slideToggle() Method: $("p").slideToggle();
+animate() Method: $(".box").animate({
+            		width: "300px",
+            		height: "300px",
+            		marginLeft: "150px",
+            		borderWidth: "10px",
+            		opacity: 0.5
+        	  });
+
+animate stop() Method: $(".box").stop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
