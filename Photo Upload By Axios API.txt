@@ -1,0 +1,143 @@
+আগে অবশ্যই jquery, axios এবং sweet alert স্ক্রিপ্ট ফাইল যুক্ত করতে হবে।
+===========HTML Blade View===========
+//আগে চেক করবে profile তৈরী করা হইসে কিনা? তাই isset() দিয়ে চেক করা হইসে।
+@isset($profile)
+  <img src="{{asset('images/user/'.$profile->photo)}}" id="previous_img"
+   style="{{$profile->photo == null ? 'display:none' : 'display:block'}}"
+   class="img-thumbnail" alt="profile-photo">
+@endisset
+<label for="photo" class="w-100 my-3">Upload Profile Photo</label>
+<form>
+  <input type="file" class="form-control" id="image_input">
+  <button type="reset" id="reset" class="d-none"></button>
+</form>
+<p class="text-danger" id="error_message"></p>
+<button style="width: 100px;" class="btn btn-success my-3" id="img_upload_btn">Upload</button>
+<img src="" alt="" id="img_preview" class="w-100">
+
+======== Controller ============
+    /**
+     * @return JsonResponse
+     */
+    final public function uploadProfilePhoto(Request $request):JsonResponse
+    {
+        $file = $request->input('photo');
+        $name = Str::slug(Auth::user()->name.Carbon::now());
+        $width = 200;
+        $height = 200;
+        $path = 'images/user/';
+
+	//PhotoUploadController আগেই বানানো হইসে ছবি আপলোড, ডিলেট এর জন্যে
+	//PhotoUploadController এর ভিতরে প্যারামিটার গুলো দিয়ে দিলেই হবে।
+        $profile = Profile::where('user_id', Auth::id())->first();
+        if($profile?->photo){
+            PhotoUploadController::imageUnlink($path, $profile->photo);
+        }
+        
+        $image_name =  PhotoUploadController::imageUpload($name, $height, $width, $path, $file);
+        $profile_data['photo'] = $image_name;
+
+	//যদি আগে থেকেই profile করা থাকে তাহলে ডাটাগুলো নিয়ে profile update করে দিবে।
+	// সাথে ভিউ পেজে রিটার্ন করা হইসে photo url, msg জেসন ফরমেটে.
+        if($profile){
+            $profile->update($profile_data);
+            return response()->json([
+                'msg' => 'Profile photo updated successfully',
+                'cls' => 'success',
+                'photo' => url($path, $profile->photo)
+            ]);
+        }
+	
+	//যদি profile না থাকে তাহলে শুধু message সেন্ড করবে নতুন প্রোফাইল তৈরী করার জন্যে
+        return response()->json([
+            'msg' => 'Please update profile first',
+            'cls' => 'warning',
+        ]);
+    }
+
+
+
+
+
+==========javascript Codes==========
+<script>
+
+// button e spinner process krte thakbe jotokhon na button submit hoy
+let is_loading = false;
+let handleLoading = () =>{
+   if(is_loading){
+      $('#img_upload_btn').html(`<div class="spinner-border spinner-border-sm" role="status">
+                                         <span class="visually-hidden">Loading...</span>
+                                       </div>`)
+   } else {
+      $('#img_upload_btn').text('Upload');
+   }
+}
+
+const DomainUrl = window.location.origin;
+let photo;
+// profile image update
+   $('#image_input').on('change', function(e){
+                // ইনপুট ফাইল থেকে ছবিটিকে আগে নেওয়া হলো
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () =>{
+        // ছবিটিকে base64 এ কনভার্ট করসে। form 'multipart‘ এ ডাটা যায় অবজেক্ট আকারে।
+        // অবজেক্ট আকারে ডাটা  এপিআই এর দ্বারা পাঠানো যায় না। তাই ছবিটিকে base 64 এ এনকোড করে
+        // এপিআই দ্বারা পাঠানো হইসে। এখন এই ফাইল নেয়ে backend এ কাজ করা যাবে।
+            photo = reader.result;
+            $('#img_preview').attr('src', photo);
+        }
+    })
+
+    $('#img_upload_btn').on('click', function(){
+        // button e matro click kra hoise, tai adike theke spinner ghura suru krbe
+        is_loading = true;
+        handleLoading();
+        // যদি ছবি ছাড়া সাবমিট বাটন প্রেস পরে তাহলে ইরর মেসেজ দিবে
+        if(photo == undefined){
+            $('#error_message').text('Please insert an image');
+        } else {
+            $('#error_message').text('');
+            axios.post(`${DomainUrl}/dashboard/upload-profile-photo`, {
+                photo: photo,
+            }).then(res => {
+                // data chole asche tai spinner ghura bondho krte hoise
+                // sathe reset button e trigger method er dhara click kre input file reset kra hoise
+                // nicher image tike null kore deya hoise
+                // preivious image tike show kra hoise
+                // pore sweet alert er maddhome alert message deya hoise,controller theke pathano
+                // json formate e varibale 'cls', 'msg' diye.
+                is_loading = false;
+                handleLoading();
+                let response = res.data
+                $('#reset').trigger('click')
+                $('#previous_img').attr('src', response.photo).show();
+                $('#img_preview').attr('src', '');
+                Swal.fire({
+                    position: 'top-end',
+                    icon: response.cls,
+                    toast: true,
+                    title: response.msg,
+                    showConfirmButton: false,
+                    timer: 3000,
+                })
+
+            })
+        }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
