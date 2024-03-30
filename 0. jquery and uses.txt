@@ -1,3 +1,41 @@
+======window Methods======
+window.location.href: returns the url of current page
+ex: https://www.w3schools.com/js/js_window_location.asp
+
+window.location.origin: return the domain name
+ex: www.w3schools.com
+
+window.location.pathname: return the current page/file name
+ex: /js/js_window_location.asp
+
+window.location.protocol: return the web protocols
+ex: https: or http:
+
+window.location.assign(): loads a new document/page
+ex: window.location.assign("https://www.w3schools.com")
+
+=======form methods: submit form and takes serialize data:========
+$('#login_form').submit(function(event){
+  event.preventDefault();
+  let formData = $(this).serialize();
+});
+
+=======loop: give only key value pairs data========
+foreach loop: 
+$.each(res, function(key, value) {
+  $('#error').append(`<li>${value}</li>`)
+});
+
+SetTimeOut function: proti 1000 e 1seconds. nicher deya somoyer por vitorer kaj krbe
+setTimeout(() => {
+   $('#error').empty()
+}, 1500);
+
+=======local storage========
+localStorage.setItem("token", res.token);
+localStorage.getItem("token");
+localStorage.removeItem("token");
+
 ========Manupulation Methods========
 Get text() value : var str = $("p").text();
 Set text() value : $("p").text("This is demo text.");

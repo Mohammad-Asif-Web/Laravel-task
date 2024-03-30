@@ -1,0 +1,126 @@
+age default vabe laravel e 'lang' folder thakto, kintu laravel 9 asar por sei folder root directory te move kra hoise. tai amra custom files and folder create kore 'Multiple Language Switcher' banabo. config>app.php files e language er 'locale' => 'en', default vabe deya thake. amra middleware er dhara ai value tike get kore, abong set kore language change krbo.
+
+============step 1 Create folder and files==============
+'resourse' folder e akti folder banate hobe language er jnne. nam dilam 'lang'. akhon ami jto gulo language use krbo sobar jnne abar alada kre folder banate hobe 'lang' folder e. 'bn' and 'en' banabo. ar ai folder gulor vitore 'translate.php' file create krte hobe.
+
+translate.php file language words gulo translate kore dite hobe array akare. bangla hole bangla translate, english hobe english translate. ex:
+banglar jnne--
+<?php
+return [
+    'Home' => 'হোম',
+    'About Us' => 'সম্পর্কে',
+    'Blogs' => 'ব্লগ',
+    'Contact Us' => 'যোগাযোগ',
+    'Admin Sign In' => 'এডমিন লগিন',
+];
+
+english jnne-- 
+<?php
+
+return [
+    'Home' => 'Home',
+    'About Us' => 'About Us',
+    'Blogs' => 'Blogs',
+    'Contact Us' => 'Contact Us',
+    'Admin Sign In' => 'Admin Sign In',
+];
+
+
+
+======step 2 create Multi language file in 'Config' folder======
+tarpor 'config' file e ase new akta file create krte hobe 'languages.php'. ai file e bole dibo amra je kon language gula use krte chacchi. ex:
+<?php
+
+return [
+    'en' => 'English',
+    'bn' => 'Bangla',
+];
+
+
+============step 3 make a middleware ==============
+->php artisan make:middleware Language
+public function handle(Request $request, Closure $next): Response
+{
+   if (Session()->has('applocale') AND array_key_exists(Session()->get('applocale'), config('languages')) ) {
+     App::setLocale(Session()->get('applocale'));
+   } else {
+     App::setLocale(config('app.fallback_locale'));
+   }
+   return $next($request);
+}
+
+akhon ai middleware tike kernel.php te store krte hobe, jedike 'web' middleware gulo store kra ase, ex:
+
+protected $middlewareGroups = [
+  'web' => [
+  App\Http\Middleware\Language::class, //shudhu atotuku dilei hobe
+
+],
+
+============step 4 create a router==============
+Route::get('/lang/{lang}', [LanguageController::class, 'switchLang'])->name('lang.switch');
+
+============step 5 create a controller==============
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
+
+class LanguageController extends Controller
+{
+    public function switchLang($lang)
+    {
+        if (array_key_exists($lang, Config::get('languages'))) {
+            Session::put('applocale', $lang);
+        }
+    }
+}
+
+============step 6 blade file and javascript code==============
+frontend e language switcher select element er dhara banate hobe, abong ata dynamically hobe 'config' use kre.
+
+<select name="" id="language_switcher" class="form-control top-selector">
+ <option>{{ Config::get('languages')[App::getLocale()] }}</option>
+ @foreach ( Config::get('languages') as $lang => $language )
+  @if ($lang != App::getLocale() )
+   <option value="{{$lang}}">
+     <a href="" class="dropdown-item">{{$language}}</a>
+   </option>
+  @endif
+ @endforeach
+</select>
+
+akhon ai blade file javascript code add krte hobe. jehetu language e click krle data change hobe, tai 'axios' er dhara kaj ti complete krte hobe. ar obossoi 'axios' er cdn link/script src file add krte hobe.
+
+@push('js')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+ $("#language_switcher").on("change", function(event) {
+   event.preventDefault();
+   let domainName = window.location.origin;
+   var lang = $(this).val();
+
+   axios.get(`${domainName}/lang/${lang}`)
+   .then(function () {
+     window.location.reload()
+   }).catch(function () {
+     window.location.reload();
+   });
+
+ });
+</script>
+@endpush
+
+
+
+
+
+
+
+
+
+============step 7==============
+
+
+
+
+
+

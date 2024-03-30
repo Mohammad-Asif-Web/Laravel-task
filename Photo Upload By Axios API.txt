@@ -104,10 +104,12 @@ let photo;
                 photo: photo,
             }).then(res => {
                 // data chole asche tai spinner ghura bondho krte hoise
-                // sathe reset button e trigger method er dhara click kre input file reset kra hoise
+                // sathe reset button e trigger method er dhara click kre
+ 		//input file reset kra hoise
                 // nicher image tike null kore deya hoise
                 // preivious image tike show kra hoise
-                // pore sweet alert er maddhome alert message deya hoise,controller theke pathano
+                // pore sweet alert er maddhome alert message 
+		//deyahoise,controller theke pathano
                 // json formate e varibale 'cls', 'msg' diye.
                 is_loading = false;
                 handleLoading();
