@@ -1,0 +1,16 @@
+=======create table data=========
+starting the tinker session
+->php artisan tinker
+
+write this code step by step in terminal
+->$model = new User();
+->$model->name = 'asif';
+->$model->email = 'asif@gmail.com';
+->$model->password = Hash::make('12345678');
+->$model->role = 1;
+->$model->save();
+
+
+
+
+
